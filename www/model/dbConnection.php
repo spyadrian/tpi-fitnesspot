@@ -13,9 +13,15 @@
 
 require('../config/config.inc.php');
 
+
 class DBConnection
 {
+    // ---- FIELDS ----
+
     private static $conn = null;    // conn to the database
+
+
+    // ---- CONSTRUCTOR ----
 
     /**
      * @brief   Class Constructor - Create a new database connection if one doesn't exist
@@ -33,6 +39,8 @@ class DBConnection
     {
     }
 
+
+    // ---- METHODS ----
 
     /**
      * @brief   Create initial connection to a DB
@@ -54,7 +62,7 @@ class DBConnection
         }
 
         return $result;
-    } # end method
+    }
 
 
     /**
@@ -67,7 +75,7 @@ class DBConnection
             self::doConnection();
 
         return self::$conn;
-    } # end method
+    }
 
 
     /**
@@ -80,5 +88,5 @@ class DBConnection
     {
         $objInstance = self::getConnection();
         return call_user_func_array(array($objInstance, $chrMethod), $arrArguments);
-    } # end method
+    }
 }
