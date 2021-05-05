@@ -1,0 +1,62 @@
+/* ---- CUSTOM STYLE ---- */
+
+/* ---- WIDTH ---- */
+.w-33 {
+    width: 33%;
+}
+.w-40 {
+    width: 40%;
+}
+.w-66 {
+    width: 66%;
+}
+
+/* ---- HEIGHT ---- */
+.h-10 {
+    height: 10%;
+}
+.h-33 {
+    height: 33%;
+}
+.h-40 {
+    height: 40%;
+}
+.h-66 {
+    height: 66%;
+}
+.h-90 {
+    height: 90%;
+}
+
+/* ---- MARGIN ---- */
+.ml-33 {
+    margin-left: 33%;
+}
+
+/* ---- ROUND ---- */
+.rounded-30 {
+    border-radius: 30px !important;
+}
+
+.rounded-10 {
+    border-radius: 10px !important;
+}
+
+/* ---- TEXT WRAPPER ---- */
+.text-wrapper-225 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 225px;
+}
+
+/* BANNER */
+.banner-bg {
+    background: url(../image/bg_pullUp_calisthenics.jpg);
+    /* filter: blur(8px); */
+    background-repeat: no-repeat;
+
+    /* ! pour le moment : cover */
+    background-size: cover;
+    background-position: 0px -100px;
+}
