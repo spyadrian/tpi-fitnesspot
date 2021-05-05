@@ -97,7 +97,7 @@ CREATE TABLE `spots` (
   `idUser` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `detail` varchar(100) DEFAULT NULL,
-  `adresse` varchar(100) NOT NULL,
+  `address` varchar(100) NOT NULL,
   `lat` double NOT NULL,
   `lon` double NOT NULL,
   `grade` double NOT NULL DEFAULT '0',
