@@ -24,13 +24,13 @@ class Spot
      */
     function __construct()
     {
-        $sqlGetSpots = "SELECT * FROM spot LIMIT :limit";
-        $sqlGetSpotsOrderByGrade = "SELECT * FROM spot ORDER BY grade DESC LIMIT :limit";
-        $sqlGetSpotsBetweenLonLat = "SELECT * FROM spot WHERE lat BETWEEN :latMin AND :latMax AND lon BETWEEN :lonMin AND :lonMax LIMIT :limit";
-        $sqlGetSpot = "SELECT * FROM spot WHERE idSpot = :idSpot LIMIT 1";
-        $sqlAddSpot = "INSERT INTO spot(idUser, name, detail, adresse, lat, lon, createdAt, editedAt) VALUES (:idUser, :name, :detail, :adresse, :lat, :lon, :createdAt, :editedAt)";
-        $sqlUpdateSpot = "UPDATE spot SET idUser = :idUser, name = :name, detail = :detail, adresse = :adresse, lat = :lat, lon = :lon, grade = :grade, editedAt = :editedAt WHERE idSpot = :idSpot";
-        $sqlDeleteSpot = "DELETE FROM spot WHERE idSpot = :idSpot";
+        $sqlGetSpots = "SELECT * FROM spots LIMIT :limit";
+        $sqlGetSpotsOrderByGrade = "SELECT * FROM spots ORDER BY grade DESC LIMIT :limit";
+        $sqlGetSpotsBetweenLonLat = "SELECT * FROM spots WHERE lat BETWEEN :latMin AND :latMax AND lon BETWEEN :lonMin AND :lonMax LIMIT :limit";
+        $sqlGetSpot = "SELECT * FROM spots WHERE idSpot = :idSpot LIMIT 1";
+        $sqlAddSpot = "INSERT INTO spots(idUser, name, detail, address, lat, lon, createdAt, editedAt) VALUES (:idUser, :name, :detail, :address, :lat, :lon, :createdAt, :editedAt)";
+        $sqlUpdateSpot = "UPDATE spots SET idUser = :idUser, name = :name, detail = :detail, address = :address, lat = :lat, lon = :lon, grade = :grade, editedAt = :editedAt WHERE idSpot = :idSpot";
+        $sqlDeleteSpot = "DELETE FROM spots WHERE idSpot = :idSpot";
 
         $this->psGetSpots = DBConnection::prepare($sqlGetSpots);
         $this->psGetSpots->setFetchMode(PDO::FETCH_ASSOC);
@@ -160,12 +160,12 @@ class Spot
      * @param   idUser  The idUser of the spot
      * @param   name    The name of the spot
      * @param   detail  The detail of the spot
-     * @param   adresse The adresse of the spot
+     * @param   address The address of the spot
      * @param   lat     The lat of the spot
      * @param   lon     The lon of the spot
      * @return  result  The last inserted ID
      */
-    public function AddSpot($idUser, $name, $detail, $adresse, $lat, $lon)
+    public function AddSpot($idUser, $name, $detail, $address, $lat, $lon)
     {
         $result = null;
         $createdAt = date("Y-m-d H:i:s");
@@ -176,7 +176,7 @@ class Spot
             $this->psAddSpot->bindParam(':idUser', $idUser, PDO::PARAM_INT);
             $this->psAddSpot->bindParam(':name', $name, PDO::PARAM_STR);
             $this->psAddSpot->bindParam(':detail', $detail, PDO::PARAM_STR);
-            $this->psAddSpot->bindParam(':adresse', $adresse, PDO::PARAM_STR);
+            $this->psAddSpot->bindParam(':address', $address, PDO::PARAM_STR);
             $this->psAddSpot->bindParam(':lat', $lat, PDO::PARAM_STR);
             $this->psAddSpot->bindParam(':lon', $lon, PDO::PARAM_STR);
             $this->psAddSpot->bindParam(':createdAt', $createdAt, PDO::PARAM_STR);
@@ -199,12 +199,12 @@ class Spot
      * @param   idUser  The new idUser of the spot
      * @param   name    The new name of the spot
      * @param   detail  The new detail of the spot {@code OUI}
-     * @param   adresse The new adresse of the spot
+     * @param   address The new address of the spot
      * @param   lat     The new lat of the spot
      * @param   lon     The new lon of the spot
      * @return  result  Return true, false or null
      */
-    public function UpdateSpot($idSpot, $idUser, $name, $detail, $adresse, $lat, $lon)
+    public function UpdateSpot($idSpot, $idUser, $name, $detail, $address, $lat, $lon)
     {
         $result = null;
         $editedAt = date("Y-m-d H:i:s");
@@ -215,7 +215,7 @@ class Spot
             $this->psUpdateSpot->bindParam(':idUser', $idUser, PDO::PARAM_INT);
             $this->psUpdateSpot->bindParam(':name', $name, PDO::PARAM_STR);
             $this->psUpdateSpot->bindParam(':detail', $detail, PDO::PARAM_STR);
-            $this->psUpdateSpot->bindParam(':adresse', $adresse, PDO::PARAM_STR);
+            $this->psUpdateSpot->bindParam(':address', $address, PDO::PARAM_STR);
             $this->psUpdateSpot->bindParam(':lat', $lat, PDO::PARAM_STR);
             $this->psUpdateSpot->bindParam(':lon', $lon, PDO::PARAM_STR);
             $this->psUpdateSpot->bindParam(':editedAt', $editedAt, PDO::PARAM_STR);

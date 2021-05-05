@@ -25,14 +25,14 @@ class Media
      */
     function __construct()
     {
-        $sqlGetMedias = "SELECT * FROM media LIMIT :limit";
-        $sqlGetMediasByIdSpot = "SELECT * FROM media WHERE idSpot = :idSpot LIMIT :limit";
-        $sqlGetMedia = "SELECT * FROM media WHERE idMedia = :idMedia LIMIT 1";
-        $sqlGetMediaByIdUser = "SELECT * FROM media WHERE idUser = :idUser LIMIT 1";
-        $sqlGetMediaByIdFileName = "SELECT * FROM media WHERE fileName = :fileName LIMIT 1";
-        $sqlAddMedia = "INSERT INTO media(idUser, idSpot, fileName, type, size) VALUES (:idUser, :idSpot, :fileName, :type, :size)";
-        $sqlUpdateMedia = "UPDATE media SET idUser = :idUser, idSpot = :idSpot, fileName = :fileName, type = :type, size = :size WHERE idMedia = :idMedia";
-        $sqlDeleteMedia = "DELETE FROM media WHERE idMedia = :idMedia";
+        $sqlGetMedias = "SELECT * FROM medias LIMIT :limit";
+        $sqlGetMediasByIdSpot = "SELECT * FROM medias WHERE idSpot = :idSpot LIMIT :limit";
+        $sqlGetMedia = "SELECT * FROM medias WHERE idMedia = :idMedia LIMIT 1";
+        $sqlGetMediaByIdUser = "SELECT * FROM medias WHERE idUser = :idUser LIMIT 1";
+        $sqlGetMediaByIdFileName = "SELECT * FROM medias WHERE fileName = :fileName LIMIT 1";
+        $sqlAddMedia = "INSERT INTO medias(idUser, idSpot, fileName, type, size) VALUES (:idUser, :idSpot, :fileName, :type, :size)";
+        $sqlUpdateMedia = "UPDATE medias SET idUser = :idUser, idSpot = :idSpot, fileName = :fileName, type = :type, size = :size WHERE idMedia = :idMedia";
+        $sqlDeleteMedia = "DELETE FROM medias WHERE idMedia = :idMedia";
 
         $this->psGetMedias = DBConnection::prepare($sqlGetMedias);
         $this->psGetMedias->setFetchMode(PDO::FETCH_ASSOC);

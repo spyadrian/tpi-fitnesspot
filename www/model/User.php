@@ -23,12 +23,12 @@ class User
      */
     function __construct()
     {
-        $sqlGetUsers = "SELECT * FROM user LIMIT :limit";
-        $sqlGetUser = "SELECT * FROM user WHERE idUser = :idUser LIMIT 1";
-        $sqlGetUserByEmailAndPassword = "SELECT * FROM user WHERE email = :email AND password = :password LIMIT 1";
-        $sqlAddUser = "INSERT INTO user(pseudo, email, password, permission, createdAt) VALUES (:pseudo, :email, :password, :permission, :createdAt)";
-        $sqlUpdateUser = "UPDATE user SET pseudo = :pseudo, email = :email, password = :password, permission = :permission WHERE idUser = :idUser";
-        $sqlDeleteUser = "DELETE FROM user WHERE idUser = :idUser";
+        $sqlGetUsers = "SELECT * FROM users LIMIT :limit";
+        $sqlGetUser = "SELECT * FROM users WHERE idUser = :idUser LIMIT 1";
+        $sqlGetUserByEmailAndPassword = "SELECT * FROM users WHERE email = :email AND password = :password LIMIT 1";
+        $sqlAddUser = "INSERT INTO users(pseudo, email, password, permission, createdAt) VALUES (:pseudo, :email, :password, :permission, :createdAt)";
+        $sqlUpdateUser = "UPDATE users SET pseudo = :pseudo, email = :email, password = :password, permission = :permission WHERE idUser = :idUser";
+        $sqlDeleteUser = "DELETE FROM users WHERE idUser = :idUser";
 
         $this->psGetUsers = DBConnection::prepare($sqlGetUsers);
         $this->psGetUsers->setFetchMode(PDO::FETCH_ASSOC);

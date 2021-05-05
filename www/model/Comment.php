@@ -23,12 +23,12 @@ class Comment
      */
     function __construct()
     {
-        $sqlGetComments = "SELECT * FROM comment LIMIT :limit";
-        $sqlGetCommentsByIdSpot = "SELECT * FROM comment WHERE idSpot = :idSpot LIMIT :limit";
-        $sqlGetComment = "SELECT * FROM comment WHERE idComment = :idComment LIMIT 1";
-        $sqlAddComment = "INSERT INTO comment(idUser, idSpot, content, createdAt, editedAt) VALUES (:idUser, :idSpot, :content, :createdAt, :editedAt)";
-        $sqlUpdateComment = "UPDATE comment SET idUser = :idUser, idSpot = :idSpot, content = :content, editedAt = :editedAt WHERE idComment = :idComment";
-        $sqlDeleteComment = "DELETE FROM comment WHERE idComment = :idComment";
+        $sqlGetComments = "SELECT * FROM comments LIMIT :limit";
+        $sqlGetCommentsByIdSpot = "SELECT * FROM comments WHERE idSpot = :idSpot LIMIT :limit";
+        $sqlGetComment = "SELECT * FROM comments WHERE idComment = :idComment LIMIT 1";
+        $sqlAddComment = "INSERT INTO comments(idUser, idSpot, content, createdAt, editedAt) VALUES (:idUser, :idSpot, :content, :createdAt, :editedAt)";
+        $sqlUpdateComment = "UPDATE comments SET idUser = :idUser, idSpot = :idSpot, content = :content, editedAt = :editedAt WHERE idComment = :idComment";
+        $sqlDeleteComment = "DELETE FROM comments WHERE idComment = :idComment";
 
         $this->psGetComments = DBConnection::prepare($sqlGetComments);
         $this->psGetComments->setFetchMode(PDO::FETCH_ASSOC);
