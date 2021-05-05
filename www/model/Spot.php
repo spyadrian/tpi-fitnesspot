@@ -54,8 +54,8 @@ class Spot
 
     /**
      * Get all spots.
-     * @param   int     The limite of the query, default : 10
-     * @return  array   An associative array of all the spots
+     * @param   limit   The limite of the query, default : 10
+     * @return  result  An associative array of all the spots
      */
     public function GetSpots($limit = 10)
     {
@@ -78,8 +78,8 @@ class Spot
 
     /**
      * Get all spots order by grade.
-     * @param   int     The limite of the query, default : 10
-     * @return  array   An associative array of all the spots
+     * @param   limit   The limite of the query, default : 10
+     * @return  result  An associative array of all the spots
      */
     public function GetSpotsOrderByGrade($limit = 10)
     {
@@ -102,12 +102,12 @@ class Spot
 
     /**
      * Get all spots between a max lon and max lat.
-     * @param   double  The minimum latitude of the query
-     * @param   double  The maximum latitude of the query
-     * @param   double  The minimum longitude of the query
-     * @param   double  The maximum longitude of the query
-     * @param   int     The limite of the query, default : 100
-     * @return  array   An associative array of all the spots
+     * @param   latMin  The minimum latitude of the query
+     * @param   latMax  The maximum latitude of the query
+     * @param   lonMin  The minimum longitude of the query
+     * @param   lonMax  The maximum longitude of the query
+     * @param   limit   The limite of the query, default : 100
+     * @return  result  An associative array of all the spots
      */
     public function GetSpotsBetweenLonLat($latMin, $latMax, $lonMin, $lonMax, $limit = 100)
     {
@@ -133,8 +133,8 @@ class Spot
 
     /**
      * Get one spot by id.
-     * @param   int     The id of the spot
-     * @return  array   An associative array with the spot
+     * @param   idSpot  The id of the spot
+     * @return  result  An associative array with the spot
      */
     public function GetSpot($idSpot)
     {
@@ -157,13 +157,13 @@ class Spot
 
     /**
      * Add an spot.
-     * @param   int     The idUser of the spot
-     * @param   string  The name of the spot
-     * @param   string  The detail of the spot
-     * @param   string  The adresse of the spot
-     * @param   double  The lat of the spot
-     * @param   double  The lon of the spot
-     * @return  int     The last inserted ID
+     * @param   idUser  The idUser of the spot
+     * @param   name    The name of the spot
+     * @param   detail  The detail of the spot
+     * @param   adresse The adresse of the spot
+     * @param   lat     The lat of the spot
+     * @param   lon     The lon of the spot
+     * @return  result  The last inserted ID
      */
     public function AddSpot($idUser, $name, $detail, $adresse, $lat, $lon)
     {
@@ -195,14 +195,14 @@ class Spot
 
     /**
      * Update an spot.
-     * @param   int     The spot id you want to update
-     * @param   int     The new idUser of the spot
-     * @param   string  The new name of the spot
-     * @param   string  The new detail of the spot
-     * @param   string  The new adresse of the spot
-     * @param   double  The new lat of the spot
-     * @param   double  The new lon of the spot
-     * @return  bool    Return true, false or null
+     * @param   idSpot  The spot id you want to update
+     * @param   idUser  The new idUser of the spot
+     * @param   name    The new name of the spot
+     * @param   detail  The new detail of the spot {@code OUI}
+     * @param   adresse The new adresse of the spot
+     * @param   lat     The new lat of the spot
+     * @param   lon     The new lon of the spot
+     * @return  result  Return true, false or null
      */
     public function UpdateSpot($idSpot, $idUser, $name, $detail, $adresse, $lat, $lon)
     {
@@ -232,8 +232,8 @@ class Spot
 
     /**
      * Delete spot
-     * @param   int     The spot id you want to delete
-     * @return  bool    Return true, false or null
+     * @param   idSpot  The spot id you want to delete
+     * @return  result  Return true, false or null
      */
     public function DeleteSpot($idSpot)
     {

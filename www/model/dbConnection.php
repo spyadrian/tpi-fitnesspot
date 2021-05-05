@@ -44,7 +44,7 @@ class DBConnection
 
     /**
      * @brief   Create initial connection to a DB
-     * @return  $result (boolean);
+     * @return  result (boolean);
      */
     private static function doConnection()
     {
@@ -67,7 +67,7 @@ class DBConnection
 
     /**
      * @brief   Create a static conn, or return one already created.
-     * @return  $conn (obj);
+     * @return  conn (obj);
      */
     private static function getConnection()
     {
@@ -80,9 +80,9 @@ class DBConnection
 
     /**
      * @brief	Passes on any static calls to this class onto the singleton PDO instance
-     * @param 	$chrMethod		The method to call
-     * @param 	$arrArguments	The method's parameters
-     * @return 	$mix			The method's return value
+     * @param 	chrMethod		The method to call
+     * @param 	arrArguments    The method's parameters
+     * @return 	mix			    The method's return value
      */
     final public static function __callStatic($chrMethod, $arrArguments)
     {

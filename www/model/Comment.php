@@ -49,8 +49,8 @@ class Comment
 
     /**
      * Get all comments.
-     * @param   int     The limite of the query, default : 10
-     * @return  array   An associative array of all the comments
+     * @param   limit   The limite of the query, default : 10
+     * @return  result  An associative array of all the comments
      */
     public function GetComments($limit = 10)
     {
@@ -73,9 +73,9 @@ class Comment
 
     /**
      * Get all comments order by grade.
-     * @param   int     The limite of the query, default : 10
-     * @param   int     The idSpot of the comments
-     * @return  array   An associative array of all the comments
+     * @param   idSpot  The limite of the query, default : 10
+     * @param   limit   The idSpot of the comments
+     * @return  result  An associative array of all the comments
      */
     public function GetCommentsByIdSpot($idSpot, $limit = 10)
     {
@@ -99,8 +99,8 @@ class Comment
 
     /**
      * Get one comment by id.
-     * @param   int     The id of the comment
-     * @return  array   An associative array with the comment
+     * @param   idComment   The id of the comment
+     * @return  result      An associative array with the comment
      */
     public function GetComment($idComment)
     {
@@ -123,10 +123,10 @@ class Comment
 
     /**
      * Add an comment.
-     * @param   int     The idUser of the comment
-     * @param   int     The idSpot of the comment
-     * @param   string  The content of the comment
-     * @return  int     The last inserted ID
+     * @param   idUser      The idUser of the comment
+     * @param   idSpot      The idSpot of the comment
+     * @param   content     The content of the comment
+     * @return  result      The last inserted ID
      */
     public function AddComment($idUser, $idSpot, $content)
     {
@@ -155,11 +155,11 @@ class Comment
 
     /**
      * Update an comment.
-     * @param   int     The comment id you want to update
-     * @param   int     The new idUser of the comment
-     * @param   int     The new idSpot of the comment
-     * @param   string  The new content of the comment
-     * @return  bool    Return true, false or null
+     * @param   idComment   The comment id you want to update
+     * @param   idUser      The new idUser of the comment
+     * @param   idSpot      The new idSpot of the comment
+     * @param   content     The new content of the comment
+     * @return  result      Return true, false or null
      */
     public function UpdateComment($idComment, $idUser, $idSpot, $content)
     {
@@ -186,8 +186,8 @@ class Comment
 
     /**
      * Delete comment
-     * @param   int     The comment id you want to delete
-     * @return  bool    Return true, false or null
+     * @param   idComment   The comment id you want to delete
+     * @return  result      Return true, false or null
      */
     public function DeleteComment($idComment)
     {

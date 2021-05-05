@@ -49,8 +49,8 @@ class User
 
     /**
      * Get all users.
-     * @param   int     The limite of the query, default : 10
-     * @return  array   An associative array of all the users
+     * @param   limit   The limite of the query, default : 10
+     * @return  result  An associative array of all the users
      */
     public function GetUsers($limit = 10)
     {
@@ -73,8 +73,8 @@ class User
 
     /**
      * Get one user by id.
-     * @param   int     The id of the user
-     * @return  array   An associative array with the user
+     * @param   idUser  The id of the user
+     * @return  result  An associative array with the user
      */
     public function GetUser($idUser)
     {
@@ -97,9 +97,9 @@ class User
 
     /**
      * Get user by his email and password.
-     * @param   string  The email of the user
-     * @param   string  The password of the user
-     * @return  array   An associative array with the user
+     * @param   email       The email of the user
+     * @param   password    The password of the user
+     * @return  result      An associative array with the user
      */
     public function GetUserByEmailAndPassword($email, $password)
     {
@@ -123,11 +123,11 @@ class User
 
     /**
      * Add an user.
-     * @param   string  The pseudo of the user
-     * @param   string  The email of the user
-     * @param   string  The password of the user
-     * @param   int     The level of permission of the user
-     * @return  int     The last inserted ID
+     * @param   pseudo      The pseudo of the user
+     * @param   email       The email of the user
+     * @param   password    The password of the user
+     * @param   permission  The level of permission of the user
+     * @return  result      The last inserted ID
      */
     public function AddUser($pseudo, $email, $password, $permission)
     {
@@ -155,12 +155,12 @@ class User
 
     /**
      * Update an user.
-     * @param   int     The user id you want to update
-     * @param   string  The new pseudo of the user
-     * @param   string  The new email of the user
-     * @param   string  The new password of the user
-     * @param   int     The new level of permission of the user
-     * @return  bool    Return true, false or null
+     * @param   idUser      The user id you want to update
+     * @param   pseudo      The new pseudo of the user
+     * @param   email       The new email of the user
+     * @param   password    The new password of the user
+     * @param   permission  The new level of permission of the user
+     * @return  result      Return true, false or null
      */
     public function UpdateUser($idUser, $pseudo, $email, $password, $permission)
     {
@@ -186,8 +186,8 @@ class User
 
     /**
      * Delete user
-     * @param   int     The user id you want to delete
-     * @return  bool    Return true, false or null
+     * @param   idUser  The user id you want to delete
+     * @return  result  Return true, false or null
      */
     public function DeleteUser($idUser)
     {

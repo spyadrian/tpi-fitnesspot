@@ -59,8 +59,8 @@ class Media
 
     /**
      * Get all medias.
-     * @param   int     The limite of the query, default : 10
-     * @return  array   An associative array of all the medias
+     * @param   limit   The limite of the query, default : 10
+     * @return  result  An associative array of all the medias
      */
     public function GetMedias($limit = 10)
     {
@@ -83,9 +83,9 @@ class Media
 
     /**
      * Get all medias by the id Spot.
-     * @param   int     The idSpot of the media
-     * @param   int     The limite of the query, default : 10
-     * @return  array   An associative array with the media
+     * @param   idSpot  The idSpot of the media
+     * @param   limit   The limite of the query, default : 10
+     * @return  result  An associative array with the media
      */
     public function GetMediasByIdSpot($idSpot, $limit = 10)
     {
@@ -109,8 +109,8 @@ class Media
 
     /**
      * Get one media by id.
-     * @param   int     The id of the media
-     * @return  array   An associative array with the media
+     * @param   idMedia The id of the media
+     * @return  result  An associative array with the media
      */
     public function GetMedia($idMedia)
     {
@@ -133,8 +133,8 @@ class Media
 
     /**
      * Get media by the id User.
-     * @param   int     The idUser of the media
-     * @return  array   An associative array with the media
+     * @param   idUser  The idUser of the media
+     * @return  result  An associative array with the media
      */
     public function GetMediaByIdUser($idUser)
     {
@@ -157,8 +157,8 @@ class Media
 
     /**
      * Get media by his fileName.
-     * @param   string  The fileName of the media
-     * @return  array   An associative array with the media
+     * @param   fileName    The fileName of the media
+     * @return  result      An associative array with the media
      */
     public function GetMediaByIdFileName($fileName)
     {
@@ -181,12 +181,12 @@ class Media
 
     /**
      * Add an media.
-     * @param   int     The idUser of the media, default : null
-     * @param   int     The idSpot of the media, default : null
-     * @param   string  The fileName of the media
-     * @param   string  The type of the media
-     * @param   int     The size of the media
-     * @return  int     The last inserted ID
+     * @param   idUser      The idUser of the media, default : null
+     * @param   idSpot      The idSpot of the media, default : null
+     * @param   fileName    The fileName of the media
+     * @param   type        The type of the media
+     * @param   size        The size of the media
+     * @return  result      The last inserted ID
      */
     public function AddMedia($idUser = null, $idSpot = null, $fileName, $type, $size)
     {
@@ -213,13 +213,13 @@ class Media
 
     /**
      * Update an media.
-     * @param   int     The media id you want to update
-     * @param   int     The new idUser of the media, default : null
-     * @param   int     The new idSpot of the media, default : null
-     * @param   string  The new fileName of the media
-     * @param   string  The new type of the media
-     * @param   int     The new size of the media
-     * @return  bool    Return true, false or null
+     * @param   idMedia     The media id you want to update
+     * @param   idUser      The new idUser of the media, default : null
+     * @param   idSpot      The new idSpot of the media, default : null
+     * @param   fileName    The new fileName of the media
+     * @param   type        The new type of the media
+     * @param   size        The new size of the media
+     * @return  result      Return true, false or null
      */
     public function UpdateMedia($idMedia, $idUser = null, $idSpot = null, $fileName, $type, $size)
     {
@@ -246,8 +246,8 @@ class Media
 
     /**
      * Delete media
-     * @param   int     The media id you want to delete
-     * @return  bool    Return true, false or null
+     * @param   idMedia The media id you want to delete
+     * @return  result  Return true, false or null
      */
     public function DeleteMedia($idMedia)
     {
