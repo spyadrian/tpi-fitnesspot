@@ -8,6 +8,7 @@ class Spot
 
     private $psGetSpots = null;
     private $psGetSpotsOrderByGrade = null;
+    private $psGetSpotsWithFilter = null;
     private $psGetSpotsBetweenLonLat = null;
     private $psGetSpot = null;
     private $psAddSpot = null;
@@ -26,6 +27,8 @@ class Spot
     {
         $sqlGetSpots = "SELECT * FROM spots LIMIT :limit";
         $sqlGetSpotsOrderByGrade = "SELECT * FROM spots ORDER BY grade DESC LIMIT :limit";
+        $sqlGetSpotsWithFilter = "SELECT * FROM spots WHERE MATCH(name, address, detail) AGAINST(:filter IN BOOLEAN MODE) LIMIT :limit";
+        //TODO : make function GetSpotsWithFiltetORderBy... 
         $sqlGetSpotsBetweenLonLat = "SELECT * FROM spots WHERE lat BETWEEN :latMin AND :latMax AND lon BETWEEN :lonMin AND :lonMax LIMIT :limit";
         $sqlGetSpot = "SELECT * FROM spots WHERE idSpot = :idSpot LIMIT 1";
         $sqlAddSpot = "INSERT INTO spots(idUser, name, detail, address, lat, lon, createdAt, editedAt) VALUES (:idUser, :name, :detail, :address, :lat, :lon, :createdAt, :editedAt)";
@@ -37,6 +40,9 @@ class Spot
 
         $this->psGetSpotsOrderByGrade = DBConnection::prepare($sqlGetSpotsOrderByGrade);
         $this->psGetSpotsOrderByGrade->setFetchMode(PDO::FETCH_ASSOC);
+
+        $this->psGetSpotsWithFilter = DBConnection::prepare($sqlGetSpotsWithFilter);
+        $this->psGetSpotsWithFilter->setFetchMode(PDO::FETCH_ASSOC);
 
         $this->psGetSpotsBetweenLonLat = DBConnection::prepare($sqlGetSpotsBetweenLonLat);
         $this->psGetSpotsBetweenLonLat->setFetchMode(PDO::FETCH_ASSOC);
@@ -97,6 +103,32 @@ class Spot
             throw new Exception($e->getMessage());
         }
 
+        return $result;
+    }
+
+    /**
+     * Get all the spots according to a filter. 
+     * @param   filter  The filter to apply to the research
+     * @param   limit   The limite of the query, default : 10
+     * @return  result  An associative array of all the spots
+     */
+    public function GetSpotsWithFilter($filter, $limit = 10)
+    {
+        $result = null;
+
+        try {
+
+            $tmpFilter = $filter . '*';
+            $this->psGetSpotsWithFilter->bindParam(':filter', $tmpFilter, PDO::PARAM_STR);
+            $this->psGetSpotsWithFilter->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $this->psGetSpotsWithFilter->execute();
+
+            $result = $this->psGetSpotsWithFilter->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
         return $result;
     }
 

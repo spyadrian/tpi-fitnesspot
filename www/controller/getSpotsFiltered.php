@@ -1,0 +1,106 @@
+<?php
+
+require_once "../model/Spot.php";
+require_once "../model/Media.php";
+
+
+// ---- VAR ---- 
+
+$NO_IMAGE = 'no-image-found.jpg';
+
+$spot = new Spot();
+$media = new Media();
+
+$filter = filter_input(INPUT_POST, 'filter', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
+$limit = filter_input(INPUT_POST, 'limit', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
+
+$someSpots = [];
+
+
+// ---- GET SPOT ----
+
+
+if (empty($filter)) {
+    $someSpots = $spot->GetSpotsOrderByGrade($limit);
+} else {
+    $someSpots = $spot->GetSpotsWithFilter($filter, $limit);
+}
+
+
+
+
+// ---- ASSOCIATE MEDIA & SPOT ---- 
+
+// intelisense cry, because it's an array of array, but it work perfectly
+for ($i = 0; $i < count($someSpots, COUNT_NORMAL); $i++) {
+
+    $m = $media->GetMediasByIdSpot($someSpots[$i]['idSpot'], 1);
+
+    if (empty($m)) $m[0]['fileName'] = $NO_IMAGE;
+
+    $someSpots[$i] += ["media_fileName" => $m[0]['fileName']];
+}
+
+
+// ---- CREATE HTML ---- 
+
+foreach ($someSpots as $s) : ?>
+
+    <div class="card d-flex flex-row shadow w-100 mb-5" style="height: 150px;">
+
+        <img src="../asset/image/<?= $s['media_fileName'] ?>" alt="spot's image" class="w-25">
+
+        <div class="card-body d-flex ps-3">
+
+            <!-- Text & Star -->
+            <div class="d-flex flex-column justify-content-center align-items-start w-15">
+                <h3><?= empty($s['name']) ? 'Spot Nameless' : $s['name'] ?></h3>
+                <small class="text-muted d-flex justify-content-between w-33"><?= ConvertGradeToStar($s['grade']); ?></small>
+            </div>
+
+            <!-- Address -->
+            <div class="d-flex justify-content-center align-items-center w-35">
+                <p class="mb-0"><?= $s['address'] ?></p>
+            </div>
+
+            <!-- Detail -->
+            <div class="d-flex justify-content-center align-items-center w-35">
+                <p class="mb-0"><?= empty($s['detail']) ? 'This spot dont have any detail.' : $s['detail']  ?></p>
+            </div>
+
+            <!-- Heart -->
+            <div class="d-flex justify-content-center align-items-center w-15">
+                <i class="bi bi-heart-fill" style="font-size: 2rem;"></i>
+            </div>
+
+        </div>
+    </div>
+
+<?php endforeach;
+
+
+// ---- FUNCTION ----
+
+function ConvertGradeToStar($grade)
+{
+    $str_result = "";
+    $starNumber = 0;
+
+    while ($grade >= 1) {
+        $str_result .= '<i class="bi bi-star-fill"></i>';
+        $grade--;
+        $starNumber++;
+    }
+
+    if ($grade >= 0.5) {
+        $str_result .= '<i class="bi bi-star-half"></i>';
+        $starNumber++;
+    }
+
+    while ($starNumber < 5) {
+        $str_result .= '<i class="bi bi-star"></i>';
+        $starNumber++;
+    }
+
+    return $str_result;
+}

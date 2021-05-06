@@ -2,9 +2,20 @@
     ---- CUSTOM STYLE ---- 
 */
 
+/* COLORS */
+.bg-main {
+    background-color: #f6f7f8;
+}
+
 /* ---- WIDTH ---- */
+.w-15 {
+    width: 15%;
+}
 .w-33 {
     width: 33%;
+}
+.w-35 {
+    width: 35%;
 }
 .w-40 {
     width: 40%;
@@ -33,6 +44,12 @@
 /* ---- MARGIN ---- */
 .ml-33 {
     margin-left: 33%;
+}
+
+/* ---- PADDING ---- */
+.px-6 {
+    padding-right: 7% !important;
+    padding-left: 7% !important;
 }
 
 /* ---- ROUND ---- */

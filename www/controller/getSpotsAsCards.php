@@ -16,7 +16,7 @@ $someSpots = [];
 
 // ---- GET SPOT ----
 
-$someSpots = $spot->GetSpotsOrderByGrade(10);
+$someSpots = $spot->GetSpotsOrderByGrade(8);
 
 
 // ---- ASSOCIATE MEDIA & SPOT ---- 
@@ -29,4 +29,31 @@ for ($i = 0; $i < count($someSpots, COUNT_NORMAL); $i++) {
     if (empty($m)) $m[0]['fileName'] = $NO_IMAGE;
 
     $someSpots[$i] += ["media_fileName" => $m[0]['fileName']];
+}
+
+
+// ---- FUNCTION ----
+
+function ConvertGradeToStar($grade)
+{
+    $str_result = "";
+    $starNumber = 0;
+
+    while ($grade >= 1) {
+        $str_result .= '<i class="bi bi-star-fill"></i>';
+        $grade--;
+        $starNumber++;
+    }
+
+    if ($grade >= 0.5) {
+        $str_result .= '<i class="bi bi-star-half"></i>';
+        $starNumber++;
+    }
+
+    while ($starNumber < 5) {
+        $str_result .= '<i class="bi bi-star"></i>';
+        $starNumber++;
+    }
+
+    return $str_result;
 }
