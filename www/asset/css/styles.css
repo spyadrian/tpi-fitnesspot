@@ -1,4 +1,6 @@
-/* ---- CUSTOM STYLE ---- */
+/* 
+    ---- CUSTOM STYLE ---- 
+*/
 
 /* ---- WIDTH ---- */
 .w-33 {
@@ -40,6 +42,11 @@
 
 .rounded-10 {
     border-radius: 10px !important;
+}
+
+.rounded-top-10 {
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
 }
 
 /* ---- TEXT WRAPPER ---- */

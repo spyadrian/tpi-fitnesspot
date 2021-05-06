@@ -1,12 +1,32 @@
 <?php
 
 require_once "../model/Spot.php";
+require_once "../model/Media.php";
+
+
+// ---- VAR ---- 
+
+$NO_IMAGE = 'no-image-found.jpg';
 
 $spot = new Spot();
+$media = new Media();
+
+$someSpots = [];
 
 
 // ---- GET SPOT ----
 
 $someSpots = $spot->GetSpotsOrderByGrade(10);
 
-// get image foreach post
+
+// ---- ASSOCIATE MEDIA & SPOT ---- 
+
+// intelisense cry, because it's an array of array, but it work perfectly
+for ($i = 0; $i < count($someSpots, COUNT_NORMAL); $i++) {
+
+    $m = $media->GetMediasByIdSpot($someSpots[$i]['idSpot'], 1);
+
+    if (empty($m)) $m[0]['fileName'] = $NO_IMAGE;
+
+    $someSpots[$i] += ["media_fileName" => $m[0]['fileName']];
+}

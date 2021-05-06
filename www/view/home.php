@@ -100,7 +100,7 @@ require_once '../controller/getSpotsAsCards.php';
 
                 <div class="card rounded-10 shadow mb-5" style="width: 18rem; min-height: 300px;">
 
-                    <img src="../asset/image/no-image-found.jpg" class="card-img-top rounded-10" alt="spot's image">
+                    <img src="../asset/image/<?= $s['media_fileName'] ?>" class="card-img-top rounded-top-10" alt="spot's image" style="height: 160px;">
 
                     <div class="card-body">
 
@@ -110,6 +110,8 @@ require_once '../controller/getSpotsAsCards.php';
 
                             <!-- Star Algo -->
                             <?php
+
+                            //? Maybe put this function in a generic file, that would allow me to call it in other places.
 
                             $grade = $s['grade'];
                             $starNumber = 0;
@@ -134,6 +136,7 @@ require_once '../controller/getSpotsAsCards.php';
 
                         </small>
 
+                        <!-- Maybe make a WRAPPER -->
                         <p class="card-text mt-2"><?= empty($s['detail']) ? 'Spot Without Any Detail.' : $s['detail'] ?></p>
 
                     </div>
@@ -146,8 +149,5 @@ require_once '../controller/getSpotsAsCards.php';
 
     </div>
 </body>
-
-<!-- Script Js -->
-<script src="JS/mapHome.js"></script>
 
 </html>
