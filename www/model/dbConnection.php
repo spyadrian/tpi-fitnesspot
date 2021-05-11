@@ -69,7 +69,7 @@ class DBConnection
      * @brief   Create a static conn, or return one already created.
      * @return  conn (obj);
      */
-    private static function getConnection()
+    public static function getConnection()
     {
         if (self::$conn == null)
             self::doConnection();

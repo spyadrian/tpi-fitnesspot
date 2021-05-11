@@ -17,13 +17,13 @@ function GetNavBar($activePage)
 
                 <ul class="navbar-nav w-50 d-flex justify-content-center">
                     <li class="nav-item">
-                        <a class="nav-link ' . (($activePage == 'home') ? 'active" aria-current="page"' : "\"") . ' href=" ./home.php">Home</a>
+                        <a class="nav-link ' . (($activePage == 'home') ? 'active" aria-current="page"' : "\"") . ' href="./home.php">Home</a>
                     </li>
                     <li class="nav-item mx-5">
                         <a class="nav-link ' . (($activePage == 'allSpots') ? 'active" aria-current="page"' : "\"") . '" href="./allSpots.php">Spots</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link ' . (($activePage == 'maps') ? 'active" aria-current="page"' : "\"") . '" href="#">Maps</a>
+                        <a class="nav-link ' . (($activePage == 'map') ? 'active" aria-current="page"' : "\"") . '" href="./map.php">Maps</a>
                     </li>
                 </ul>
 

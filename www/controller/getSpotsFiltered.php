@@ -4,7 +4,7 @@ require_once "../model/Spot.php";
 require_once "../model/Media.php";
 
 
-// ---- VAR ---- 
+// ---- FIELDS ---- 
 
 $NO_IMAGE = 'no-image-found.jpg';
 
@@ -12,7 +12,8 @@ $spot = new Spot();
 $media = new Media();
 
 $filter = filter_input(INPUT_POST, 'filter', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
-$limit = filter_input(INPUT_POST, 'limit', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
+$from = filter_input(INPUT_POST, 'from', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
+$offset = filter_input(INPUT_POST, 'offset', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
 
 $someSpots = [];
 
@@ -21,12 +22,10 @@ $someSpots = [];
 
 
 if (empty($filter)) {
-    $someSpots = $spot->GetSpotsOrderByGrade($limit);
+    $someSpots = $spot->GetSpotsOrderByGrade($from, $offset);
 } else {
-    $someSpots = $spot->GetSpotsWithFilter($filter, $limit);
+    $someSpots = $spot->GetSpotsWithFilter($filter, $from, $offset);
 }
-
-
 
 
 // ---- ASSOCIATE MEDIA & SPOT ---- 
@@ -59,8 +58,8 @@ foreach ($someSpots as $s) : ?>
             </div>
 
             <!-- Address -->
-            <div class="d-flex justify-content-center align-items-center w-35">
-                <p class="mb-0"><?= $s['address'] ?></p>
+            <div class="d-flex justify-content-center align-items-center w-35" href="#">
+                <p class="mb-0" onclick="SetResearch('<?= explode(',', $s['address'])[1] ?>')"><?= $s['address'] ?></p>
             </div>
 
             <!-- Detail -->

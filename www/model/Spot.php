@@ -1,11 +1,13 @@
 <?php
 
-require_once "dbConnection.php";
+require_once 'dbConnection.php';
 
 class Spot
 {
     // ---- FIELDS ----
 
+    private $psGetCount = null;
+    private $psGetCountWithFilter = null;
     private $psGetSpots = null;
     private $psGetSpotsOrderByGrade = null;
     private $psGetSpotsWithFilter = null;
@@ -25,15 +27,23 @@ class Spot
      */
     function __construct()
     {
-        $sqlGetSpots = "SELECT * FROM spots LIMIT :limit";
-        $sqlGetSpotsOrderByGrade = "SELECT * FROM spots ORDER BY grade DESC LIMIT :limit";
-        $sqlGetSpotsWithFilter = "SELECT * FROM spots WHERE MATCH(name, address, detail) AGAINST(:filter IN BOOLEAN MODE) LIMIT :limit";
-        //TODO : make function GetSpotsWithFiltetORderBy... 
-        $sqlGetSpotsBetweenLonLat = "SELECT * FROM spots WHERE lat BETWEEN :latMin AND :latMax AND lon BETWEEN :lonMin AND :lonMax LIMIT :limit";
-        $sqlGetSpot = "SELECT * FROM spots WHERE idSpot = :idSpot LIMIT 1";
-        $sqlAddSpot = "INSERT INTO spots(idUser, name, detail, address, lat, lon, createdAt, editedAt) VALUES (:idUser, :name, :detail, :address, :lat, :lon, :createdAt, :editedAt)";
-        $sqlUpdateSpot = "UPDATE spots SET idUser = :idUser, name = :name, detail = :detail, address = :address, lat = :lat, lon = :lon, grade = :grade, editedAt = :editedAt WHERE idSpot = :idSpot";
-        $sqlDeleteSpot = "DELETE FROM spots WHERE idSpot = :idSpot";
+        $sqlGetCount = 'SELECT count(idSpot) as count from spots';
+        $sqlGetCountWithFilter = 'SELECT count(idSpot) as count from spots WHERE MATCH(name, address, detail) AGAINST(:filter IN BOOLEAN MODE)';
+        $sqlGetSpots = 'SELECT * FROM spots LIMIT :limit';
+        $sqlGetSpotsOrderByGrade = 'SELECT * FROM spots ORDER BY grade DESC LIMIT :from, :offset';
+        $sqlGetSpotsWithFilter = 'SELECT * FROM spots WHERE MATCH(name, address, detail) AGAINST(:filter IN BOOLEAN MODE) ORDER BY CASE WHEN name = "" THEN 1 ELSE 0 end, name asc LIMIT :from, :offset';
+        $sqlGetSpotsBetweenLonLat = 'SELECT * FROM spots WHERE lat BETWEEN :latMin AND :latMax AND lon BETWEEN :lonMin AND :lonMax LIMIT :limit';
+        $sqlGetSpot = 'SELECT * FROM spots WHERE idSpot = :idSpot LIMIT 1';
+        $sqlAddSpot = 'INSERT INTO spots(idUser, name, detail, address, lat, lon, createdAt, editedAt) VALUES (:idUser, :name, :detail, :address, :lat, :lon, :createdAt, :editedAt)';
+        $sqlUpdateSpot = 'UPDATE spots SET idUser = :idUser, name = :name, detail = :detail, address = :address, lat = :lat, lon = :lon, grade = :grade, editedAt = :editedAt WHERE idSpot = :idSpot';
+        $sqlDeleteSpot = 'DELETE FROM spots WHERE idSpot = :idSpot';
+
+        $this->psGetCount = DBConnection::prepare($sqlGetCount);
+        $this->psGetCount->setFetchMode(PDO::FETCH_ASSOC);
+
+        $this->psGetCountWithFilter = DBConnection::prepare($sqlGetCountWithFilter);
+        $this->psGetCountWithFilter->setFetchMode(PDO::FETCH_ASSOC);
+
 
         $this->psGetSpots = DBConnection::prepare($sqlGetSpots);
         $this->psGetSpots->setFetchMode(PDO::FETCH_ASSOC);
@@ -57,6 +67,53 @@ class Spot
 
 
     // ---- METHODS ----
+
+    /**
+     * Count all spots.
+     * @return  result  An associative array of the count of the spots.
+     */
+    public function GetCount()
+    {
+        $result = null;
+
+        try {
+
+            $this->psGetCount->execute();
+
+            $result = $this->psGetCount->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
+     * Count all spots with a filter.
+     * @param   filter  The filter to apply to the research
+     * @return  result  An associative array of the count of the spots.
+     */
+    public function GetCountWithFilter($filter)
+    {
+        $result = null;
+
+        try {
+
+            $filterBooleanMode = $this->FixInputSQL($filter);
+            $this->psGetCountWithFilter->bindParam(':filter', $filterBooleanMode, PDO::PARAM_STR);
+            $this->psGetCountWithFilter->execute();
+
+            $result = $this->psGetCountWithFilter->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+
+        return $result;
+    }
 
     /**
      * Get all spots.
@@ -84,16 +141,18 @@ class Spot
 
     /**
      * Get all spots order by grade.
-     * @param   limit   The limite of the query, default : 10
+     * @param   from    From where the search beggin, default : 0
+     * @param   offset  The offset where the search end, default : 10
      * @return  result  An associative array of all the spots
      */
-    public function GetSpotsOrderByGrade($limit = 10)
+    public function GetSpotsOrderByGrade($from = 0, $offset = 10)
     {
         $result = null;
 
         try {
 
-            $this->psGetSpotsOrderByGrade->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $this->psGetSpotsOrderByGrade->bindParam(':from', $from, PDO::PARAM_INT);
+            $this->psGetSpotsOrderByGrade->bindParam(':offset', $offset, PDO::PARAM_INT);
             $this->psGetSpotsOrderByGrade->execute();
 
             $result = $this->psGetSpotsOrderByGrade->fetchAll();
@@ -109,18 +168,21 @@ class Spot
     /**
      * Get all the spots according to a filter. 
      * @param   filter  The filter to apply to the research
-     * @param   limit   The limite of the query, default : 10
+     * @param   from    From where the search beggin, default : 0
+     * @param   offset  The offset where the search end, default : 10
      * @return  result  An associative array of all the spots
      */
-    public function GetSpotsWithFilter($filter, $limit = 10)
+    public function GetSpotsWithFilter($filter, $from = 0, $offset = 10)
     {
         $result = null;
 
         try {
 
-            $tmpFilter = $filter . '*';
-            $this->psGetSpotsWithFilter->bindParam(':filter', $tmpFilter, PDO::PARAM_STR);
-            $this->psGetSpotsWithFilter->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $filterBooleanMode = $this->FixInputSQL($filter);
+            //throw new Exception($filterBooleanMode);
+            $this->psGetSpotsWithFilter->bindParam(':filter', $filterBooleanMode, PDO::PARAM_STR);
+            $this->psGetSpotsWithFilter->bindParam(':from', $from, PDO::PARAM_INT);
+            $this->psGetSpotsWithFilter->bindParam(':offset', $offset, PDO::PARAM_INT);
             $this->psGetSpotsWithFilter->execute();
 
             $result = $this->psGetSpotsWithFilter->fetchAll();
@@ -200,7 +262,7 @@ class Spot
     public function AddSpot($idUser, $name, $detail, $address, $lat, $lon)
     {
         $result = null;
-        $createdAt = date("Y-m-d H:i:s");
+        $createdAt = date('Y-m-d H:i:s');
         $editedAt = $createdAt;
 
         try {
@@ -239,7 +301,7 @@ class Spot
     public function UpdateSpot($idSpot, $idUser, $name, $detail, $address, $lat, $lon)
     {
         $result = null;
-        $editedAt = date("Y-m-d H:i:s");
+        $editedAt = date('Y-m-d H:i:s');
 
         try {
 
@@ -283,5 +345,24 @@ class Spot
         }
 
         return $result;
+    }
+
+    /**
+     * Fix an input to make it suitable for the expectation of an BOOLEAN TYPE search.
+     * @param   text            The text you want to fix
+     * @return  correctText     The text fixed
+     */
+    public function FixInputSQL($text)
+    {
+        $correctText = "";
+
+        $correctText = str_replace(['+', '-', '*', '~', '"', '\'', '(', ')', '<', '>'], ' ', $text);
+        $correctText = preg_replace('/\s+/', ' ', $correctText); // remove all ussless space
+        $correctText = trim($correctText); // remove all ussless space
+
+        $correctText = str_replace(' ', '* +', $correctText);
+        $correctText = $correctText . '*';
+
+        return $correctText;
     }
 }

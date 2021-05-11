@@ -4,7 +4,7 @@ require_once "../model/Spot.php";
 require_once "../model/Media.php";
 
 
-// ---- VAR ---- 
+// ---- FIELDS ---- 
 
 $NO_IMAGE = 'no-image-found.jpg';
 

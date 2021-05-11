@@ -41,9 +41,37 @@
     height: 90%;
 }
 
+/* --- MAX / MIN -WIDTH --- */
+
+.minw-350 {
+    min-width: 350px;
+}
+
+.minh-100 {
+    min-height: 100px;
+}
+
 /* ---- MARGIN ---- */
 .ml-33 {
     margin-left: 33%;
+}
+
+.ml-lg-30 {
+    margin-left: 30px;
+}
+
+.mr-lg-30 {
+    margin-right: 30px;
+}
+
+@media (max-width: 992px) {
+    .mr-lg-30 {
+        margin-right: 0px;
+    }
+
+    .ml-lg-30 {
+        margin-left: 0px;
+    }
 }
 
 /* ---- PADDING ---- */
