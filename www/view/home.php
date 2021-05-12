@@ -42,13 +42,23 @@ require_once '../controller/getSpotsAsCards.php';
 
                 <div class="card rounded-10 shadow mb-5" style="width: 18rem; min-height: 300px;">
 
-                    <img src="../asset/image/<?= $s['media_fileName'] ?>" class="card-img-top rounded-top-10" alt="spot's image" style="height: 160px;">
+                    <a href="./oneSpot.php?idSpot=<?= $s['idSpot'] ?>">
+                        <img src="../asset/image/<?= $s['media_fileName'] ?>" class="card-img-top rounded-top-10" alt="spot's image" style="height: 160px;">
+                    </a>
 
                     <div class="card-body">
 
-                        <h5 class="card-title mb-1 text-wrapper-225"><?= empty($s['name']) ? 'Spot Nameless' : $s['name'] ?></h5>
+                        <h5 class="card-title mb-1 text-wrapper-225">
+                            <b><?= empty($s['name']) ? 'Spot Nameless' : $s['name'] ?></b>
+                        </h5>
 
-                        <small class="text-muted d-flex justify-content-between w-33"><?= ConvertGradeToStar($s['grade']); ?></small>
+                        <div class="d-flex flex-row justify-content-between align-items-start">
+                            <small class="d-flex justify-content-between w-33"><?= ConvertGradeToStar($s['averageRate']); ?></small>
+                            <p class="card-text text-muted" style="color: #ff5454 !important;">
+                                <?= $s['numberLike'] ?>
+                                <i class="bi bi-heart-fill" style="font-size: 0.9rem;"></i>
+                            </p>
+                        </div>
 
                         <!-- Maybe make a WRAPPER -->
                         <p class="card-text mt-2"><?= empty($s['detail']) ? 'This spot dont have any detail.' : $s['detail'] ?></p>

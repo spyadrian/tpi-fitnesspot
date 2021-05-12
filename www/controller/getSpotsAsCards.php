@@ -16,7 +16,7 @@ $someSpots = [];
 
 // ---- GET SPOT ----
 
-$someSpots = $spot->GetSpotsOrderByGrade(8);
+$someSpots = $spot->GetSpotsOrderByGrade(0, 8);
 
 
 // ---- ASSOCIATE MEDIA & SPOT ---- 
@@ -34,18 +34,18 @@ for ($i = 0; $i < count($someSpots, COUNT_NORMAL); $i++) {
 
 // ---- FUNCTION ----
 
-function ConvertGradeToStar($grade)
+function ConvertGradeToStar($averageRate)
 {
     $str_result = "";
     $starNumber = 0;
 
-    while ($grade >= 1) {
+    while ($averageRate >= 1) {
         $str_result .= '<i class="bi bi-star-fill"></i>';
-        $grade--;
+        $averageRate--;
         $starNumber++;
     }
 
-    if ($grade >= 0.5) {
+    if ($averageRate >= 0.5) {
         $str_result .= '<i class="bi bi-star-half"></i>';
         $starNumber++;
     }

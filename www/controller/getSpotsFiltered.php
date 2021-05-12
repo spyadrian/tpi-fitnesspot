@@ -47,14 +47,18 @@ foreach ($someSpots as $s) : ?>
 
     <div class="card d-flex flex-row shadow w-100 mb-5" style="height: 150px;">
 
-        <img src="../asset/image/<?= $s['media_fileName'] ?>" alt="spot's image" class="w-25">
+
+        <a href="./oneSpot.php?idSpot=<?= $s['idSpot'] ?>" class="w-25">
+            <img src="../asset/image/<?= $s['media_fileName'] ?>" alt="spot's image" class="w-100" style="height: 148px;">
+        </a>
+
 
         <div class="card-body d-flex ps-3">
 
             <!-- Text & Star -->
             <div class="d-flex flex-column justify-content-center align-items-start w-15">
                 <h3><?= empty($s['name']) ? 'Spot Nameless' : $s['name'] ?></h3>
-                <small class="text-muted d-flex justify-content-between w-33"><?= ConvertGradeToStar($s['grade']); ?></small>
+                <small class="d-flex justify-content-between w-33"><?= ConvertGradeToStar($s['averageRate']); ?></small>
             </div>
 
             <!-- Address -->
@@ -80,18 +84,18 @@ foreach ($someSpots as $s) : ?>
 
 // ---- FUNCTION ----
 
-function ConvertGradeToStar($grade)
+function ConvertGradeToStar($averageRate)
 {
     $str_result = "";
     $starNumber = 0;
 
-    while ($grade >= 1) {
+    while ($averageRate >= 1) {
         $str_result .= '<i class="bi bi-star-fill"></i>';
-        $grade--;
+        $averageRate--;
         $starNumber++;
     }
 
-    if ($grade >= 0.5) {
+    if ($averageRate >= 0.5) {
         $str_result .= '<i class="bi bi-star-half"></i>';
         $starNumber++;
     }

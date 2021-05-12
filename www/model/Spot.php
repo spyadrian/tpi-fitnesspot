@@ -30,12 +30,12 @@ class Spot
         $sqlGetCount = 'SELECT count(idSpot) as count from spots';
         $sqlGetCountWithFilter = 'SELECT count(idSpot) as count from spots WHERE MATCH(name, address, detail) AGAINST(:filter IN BOOLEAN MODE)';
         $sqlGetSpots = 'SELECT * FROM spots LIMIT :limit';
-        $sqlGetSpotsOrderByGrade = 'SELECT * FROM spots ORDER BY grade DESC LIMIT :from, :offset';
+        $sqlGetSpotsOrderByGrade = 'SELECT * FROM spots ORDER BY averageRate DESC LIMIT :from, :offset';
         $sqlGetSpotsWithFilter = 'SELECT * FROM spots WHERE MATCH(name, address, detail) AGAINST(:filter IN BOOLEAN MODE) ORDER BY CASE WHEN name = "" THEN 1 ELSE 0 end, name asc LIMIT :from, :offset';
         $sqlGetSpotsBetweenLonLat = 'SELECT * FROM spots WHERE lat BETWEEN :latMin AND :latMax AND lon BETWEEN :lonMin AND :lonMax LIMIT :limit';
         $sqlGetSpot = 'SELECT * FROM spots WHERE idSpot = :idSpot LIMIT 1';
         $sqlAddSpot = 'INSERT INTO spots(idUser, name, detail, address, lat, lon, createdAt, editedAt) VALUES (:idUser, :name, :detail, :address, :lat, :lon, :createdAt, :editedAt)';
-        $sqlUpdateSpot = 'UPDATE spots SET idUser = :idUser, name = :name, detail = :detail, address = :address, lat = :lat, lon = :lon, grade = :grade, editedAt = :editedAt WHERE idSpot = :idSpot';
+        $sqlUpdateSpot = 'UPDATE spots SET idUser = :idUser, name = :name, detail = :detail, address = :address, lat = :lat, lon = :lon, averageRate = :averageRate, editedAt = :editedAt WHERE idSpot = :idSpot';
         $sqlDeleteSpot = 'DELETE FROM spots WHERE idSpot = :idSpot';
 
         $this->psGetCount = DBConnection::prepare($sqlGetCount);
@@ -140,7 +140,7 @@ class Spot
     }
 
     /**
-     * Get all spots order by grade.
+     * Get all spots order by averageRate.
      * @param   from    From where the search beggin, default : 0
      * @param   offset  The offset where the search end, default : 10
      * @return  result  An associative array of all the spots

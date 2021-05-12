@@ -5,13 +5,6 @@ mapboxgl.accessToken = MAPBOX_ACCESSTOKEN;
 let spotsMarkers = [];
 let spotsIdAlreadyShow = [];
 
-let routeSource = [];
-let routeLayer = [];
-
-let infoParcours = "";
-
-let lstPopups = [];
-
 let lngUSer = 0;
 let latUser = 0;
 
@@ -35,6 +28,8 @@ let geolocate = new mapboxgl.GeolocateControl({
 map.addControl(geolocate);
 
 // ---  EVENTS  ---
+
+$("document").ready(GetSpots());
 
 /**
  * @summary     When the user give is position we save his coordinates.
@@ -94,73 +89,21 @@ function ShowSpots(spots) {
 
         // create div marker
         let divMarker = document.createElement("div");
+        divMarker.classList.add(["d-flex", "flex-column"]);
         divMarker.innerHTML = '<i class="bi bi-geo-alt-fill" style="font-size: 1.5rem;"></i>';
-
-        divMarker.onclick = function () {
-            if (getUserLocaliation) GenerateItinerary(lngUSer, latUser, parseFloat(spot.lon), parseFloat(spot.lat));
-        };
-
-        // divMarker.onmouseenter = function () {
-        //     let html = spot.name != "" ? spot.name : "Spot Nameless";
-
-        //     lstPopups.push(
-        //         new mapboxgl.Popup({ closeOnClick: true })
-        //             .setLngLat([parseFloat(spot.lon), parseFloat(spot.lat)])
-        //             .setHTML(html)
-        //             .addTo(map)
-        //     );
-        // };
 
         spotsMarkers.push({
             id: spot.idSpot,
-            markerComponent: new mapboxgl.Marker(divMarker).setLngLat([spot.lon, spot.lat]).addTo(map),
+            markerComponent: new mapboxgl.Marker(divMarker)
+                .setLngLat([spot.lon, spot.lat])
+                .setPopup(new mapboxgl.Popup({ offset: 25, closeOnClick: true, closeOnMove: true, focusAfterOpen: true }).setHTML(GetHTMLPopUp(spot)))
+                .addTo(map),
         });
 
         spotsIdAlreadyShow.push(spot.idSpot);
     }
 
-    // for (let i = 0; i < toilets.length; i++) {
-    //     if (toiletsIdAlreadyShow.includes(toilets[i]["id"]) == false) {
-    //         toiletsIdAlreadyShow.push(toilets[i]["id"]);
-
-    //         let divMarker = document.createElement("div");
-    //         divMarker.className = "spotToilet";
-
-    //         divMarker.onclick = function () {
-    //             if (getUserLocaliation) {
-    //                 GenerateItinerary(lngUSer, latUser, parseFloat(toilets[i]["lng"]), parseFloat(toilets[i]["lat"]));
-    //                 document.getElementById("course").style.display = "block";
-    //             }
-    //         };
-
-    //         divMarker.onmouseenter = function () {
-    //             let html = toilets[i]["name"] != "" ? toilets[i]["name"] + "<br>" : "";
-    //             html += toilets[i]["wheelChair"] == "0" ? "" : '<i class="fa fa-wheelchair fa-lg" aria-hidden="true"></i>';
-
-    //             if (html != "") {
-    //                 lstPopups.push(
-    //                     new mapboxgl.Popup({ closeOnClick: true })
-    //                         .setLngLat([parseFloat(toilets[i]["lng"]), parseFloat(toilets[i]["lat"])])
-    //                         .setHTML(html)
-    //                         .addTo(map)
-    //                 );
-    //             }
-    //         };
-
-    //         divMarker.onmouseleave = function () {
-    //             for (let i = 0; i < lstPopups.length; i++) {
-    //                 lstPopups[i].remove();
-    //             }
-    //         };
-
-    //         toiletsMarkers.push({
-    //             id: toilets[i]["id"],
-    //             markerComponent: new mapboxgl.Marker(divMarker).setLngLat([toilets[i]["lng"], toilets[i]["lat"]]).addTo(map),
-    //         });
-    //     }
-    // }
-
-    //DeleteUselessMarker();
+    DeleteUselessMarker();
 }
 
 /**
@@ -191,67 +134,20 @@ function DeleteUselessMarker() {
 }
 
 /**
- * @summary     Generate an itinerary from a start and a end position given.
- * @param       {number}    startPointLng   Start point longitude
- * @param       {number}    startPointLat   Start point latitude
- * @param       {number}    finishPointLng  End point longitude
- * @param       {number}    finishPointLat  End point latitude
+ * @summary     Create the HTML of the popup, with the right information.
+ * @param       {object}    spot    An object spot, with all his properties.
+ * @returns     {string}    the HTML of the popup in string.
  */
-function GenerateItinerary(startPointLng, startPointLat, finishPointLng, finishPointLat) {
-    infoParcours = "";
+function GetHTMLPopUp(spot) {
+    let HTML = "";
+    HTML += '<div class="d-flex flex-column justify-content-center align-items-center">';
+    HTML += '<h6 class="text-wrapper-225 mb-0"><strong>' + spot.name + "</strong></h6>";
+    HTML += '<small class="text-muted mb-4 text-center">' + spot.address + "</small><br>";
+    HTML +=
+        '<a href="oneSpot.php?idSpot=' +
+        spot.idSpot +
+        '" type="button" class="btn btn-primary btn-sm w-50" style="min-width: 100px">More details</a>';
+    HTML += "</div>";
 
-    fetch(
-        "https://api.mapbox.com/directions/v5/mapbox/walking/" +
-            startPointLng +
-            "," +
-            startPointLat +
-            ";" +
-            finishPointLng +
-            "," +
-            finishPointLat +
-            "?alternatives=true&language=en&geometries=geojson&steps=true&access_token=" +
-            MAPBOX_ACCESSTOKEN
-    )
-        .then((response) => response.json())
-        .then((res) => {
-            routeSource = {
-                type: "geojson",
-                data: {
-                    type: "Feature",
-                    properties: {},
-                    geometry: {
-                        type: "LineString",
-                        coordinates: res.routes[0].geometry.coordinates,
-                    },
-                },
-            };
-
-            routeLayer = {
-                id: "route",
-                type: "line",
-                source: "route",
-                layout: {
-                    "line-join": "round",
-                    "line-cap": "round",
-                },
-                paint: {
-                    "line-color": "#2D1E2F",
-                    "line-width": 8,
-                },
-            };
-
-            if (map.getSource("route") == null) {
-                map.addSource("route", routeSource);
-                map.addLayer(routeLayer);
-            } else {
-                map.getSource("route").setData({
-                    type: "Feature",
-                    properties: {},
-                    geometry: {
-                        type: "LineString",
-                        coordinates: res.routes[0].geometry.coordinates,
-                    },
-                });
-            }
-        });
+    return HTML;
 }

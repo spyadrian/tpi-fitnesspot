@@ -58,7 +58,7 @@ async function GetNumberPage() {
     let numberPage = 0;
 
     await $.ajax({
-        url: "../controller/GetCountSpots.php",
+        url: "../controller/getCountSpots.php",
         type: "POST",
         data: {
             filter: filter,
