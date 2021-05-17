@@ -32,7 +32,7 @@ function GetNavBar($activePage)
                         <a href="#" type="button" class="btn btn-link me-2">Sign Up</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" type="button" class="btn btn-primary me-3">Sign In</a>
+                        <a href="#" type="button" class="btn btn-primary">Sign In</a>
                     </li>
                 </ul>
 

@@ -3,6 +3,7 @@
 require_once "../model/Spot.php";
 require_once "../model/Media.php";
 require_once "../model/Like.php";
+require_once "../model/Comment.php";
 
 
 // ---- FIELDS ---- 
@@ -12,28 +13,42 @@ $NO_IMAGE = 'no-image-found.jpg';
 $spot = new Spot();
 $media = new Media();
 $like = new Like();
+$comment = new Comment();
 
 $idSpot = filter_input(INPUT_GET, 'idSpot', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
 
 $mySpot = null;
 $myMedias = [];
 $myLike = null;
+$myComments = [];
 
 
-// ---- GET SPOT & MEDIA & LIKE ----
+// ---- GET SPOT ----
 
 $mySpot = $spot->GetSpot($idSpot);
-if (empty($mySpot)) return;
+if (empty($mySpot)) die;
 else $mySpot = $mySpot[0];
+
+
+// ---- GET MEDIA ----
 
 $myMedias = $media->GetMediasByIdSpot($mySpot['idSpot'], 20);
 
 if (empty($myMedias)) $myMedias[0]['fileName'] = $NO_IMAGE;
 
+
+// ---- GET LIKE ----
+
 // if the user liked the spot
 $myLike = $like->GetLikeById($mySpot['idSpot'], $mySpot['idUser']);
 if (empty($myLike) || $myLike[0]['liked'] == "0") $myLike = "0";
 else $myLike = "1";
+
+
+// ---- GET COMMENT ----
+
+$myComments = $comment->GetCommentsByIdSpot($idSpot);
+
 
 // ---- FUNCTION ----
 

@@ -24,7 +24,7 @@ class Comment
     function __construct()
     {
         $sqlGetComments = "SELECT * FROM comments LIMIT :limit";
-        $sqlGetCommentsByIdSpot = "SELECT * FROM comments WHERE idSpot = :idSpot LIMIT :limit";
+        $sqlGetCommentsByIdSpot = "SELECT idComment, c.idUser, idSpot, content, c.createdAt, pseudo FROM comments c LEFT JOIN users u on c.idUser = u.idUser WHERE idSpot = :idSpot ORDER BY c.createdAt ASC LIMIT :limit";
         $sqlGetComment = "SELECT * FROM comments WHERE idComment = :idComment LIMIT 1";
         $sqlAddComment = "INSERT INTO comments(idUser, idSpot, content, createdAt, editedAt) VALUES (:idUser, :idSpot, :content, :createdAt, :editedAt)";
         $sqlUpdateComment = "UPDATE comments SET idUser = :idUser, idSpot = :idSpot, content = :content, editedAt = :editedAt WHERE idComment = :idComment";
