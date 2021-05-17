@@ -27,7 +27,6 @@ async function OnResearch() {
 }
 
 function SetResearch(research) {
-    console.log(research);
     document.getElementById("searchBar").value = research;
     OnResearch();
 }

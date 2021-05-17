@@ -13,7 +13,10 @@ class User
 
     // ---- FIELDS ----
 
+    private $psGetCount = null;
+    private $psGetCountWithFilter = null;
     private $psGetUsers = null;
+    private $psGetUsersWithFilter = null;
     private $psGetUser = null;
     private $psGetUserByEmailAndPassword = null;
     private $psAddUser = null;
@@ -30,15 +33,27 @@ class User
      */
     function __construct()
     {
-        $sqlGetUsers = "SELECT * FROM users LIMIT :limit";
+        $sqlGetCount = 'SELECT count(idUser) as count from users';
+        $sqlGetCountWithFilter = 'SELECT count(idUser) as count from users WHERE MATCH(pseudo, email) AGAINST(:filter IN BOOLEAN MODE)';
+        $sqlGetUsers = "SELECT * FROM users ORDER BY pseudo ASC, email ASC LIMIT :from, :offset";
+        $sqlGetUsersWithFilter = 'SELECT * FROM users WHERE MATCH(pseudo, email) AGAINST(:filter IN BOOLEAN MODE) ORDER BY pseudo ASC, email ASC LIMIT :from, :offset';
         $sqlGetUser = "SELECT * FROM users WHERE idUser = :idUser LIMIT 1";
         $sqlGetUserByEmailAndPassword = "SELECT * FROM users WHERE email = :email AND password = :password LIMIT 1";
-        $sqlAddUser = "INSERT INTO users(pseudo, email, password, permission, createdAt) VALUES (:pseudo, :email, :password, :permission, :createdAt)";
-        $sqlUpdateUser = "UPDATE users SET pseudo = :pseudo, email = :email, password = :password, permission = :permission WHERE idUser = :idUser";
+        $sqlAddUser = "INSERT INTO users(pseudo, email, password, createdAt) VALUES (:pseudo, :email, :password, :createdAt)";
+        $sqlUpdateUser = "UPDATE users SET pseudo = :pseudo, email = :email, password = :password, WHERE idUser = :idUser";
         $sqlDeleteUser = "DELETE FROM users WHERE idUser = :idUser";
+
+        $this->psGetCount = DBConnection::prepare($sqlGetCount);
+        $this->psGetCount->setFetchMode(PDO::FETCH_ASSOC);
+
+        $this->psGetCountWithFilter = DBConnection::prepare($sqlGetCountWithFilter);
+        $this->psGetCountWithFilter->setFetchMode(PDO::FETCH_ASSOC);
 
         $this->psGetUsers = DBConnection::prepare($sqlGetUsers);
         $this->psGetUsers->setFetchMode(PDO::FETCH_ASSOC);
+
+        $this->psGetUsersWithFilter = DBConnection::prepare($sqlGetUsersWithFilter);
+        $this->psGetUsersWithFilter->setFetchMode(PDO::FETCH_ASSOC);
 
         $this->psGetUser = DBConnection::prepare($sqlGetUser);
         $this->psGetUser->setFetchMode(PDO::FETCH_ASSOC);
@@ -55,17 +70,66 @@ class User
     // ---- METHODS ----
 
     /**
-     * Get all users.
-     * @param   limit   The limite of the query, default : 10
-     * @return  result  An associative array of all the users
+     * Count all users.
+     * @return  result  An associative array of the count of the users.
      */
-    public function GetUsers($limit = 10)
+    public function GetCount()
     {
         $result = null;
 
         try {
 
-            $this->psGetUsers->bindParam(':limit', $limit, PDO::PARAM_INT);
+            $this->psGetCount->execute();
+
+            $result = $this->psGetCount->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
+     * Count all users with a filter.
+     * @param   filter  The filter to apply to the research
+     * @return  result  An associative array of the count of the users.
+     */
+    public function GetCountWithFilter($filter)
+    {
+        $result = null;
+
+        try {
+
+            $filterBooleanMode = $this->FixInputSQL($filter);
+            $this->psGetCountWithFilter->bindParam(':filter', $filterBooleanMode, PDO::PARAM_STR);
+            $this->psGetCountWithFilter->execute();
+
+            $result = $this->psGetCountWithFilter->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get all users.
+     * @param   from    From where the search beggin, default : 0
+     * @param   offset  The offset where the search end, default : 10
+     * @return  result  An associative array of all the users
+     */
+    public function GetUsers($from = 0, $offset = 10)
+    {
+        $result = null;
+
+        try {
+
+            $this->psGetUsers->bindParam(':from', $from, PDO::PARAM_INT);
+            $this->psGetUsers->bindParam(':offset', $offset, PDO::PARAM_INT);
             $this->psGetUsers->execute();
 
             $result = $this->psGetUsers->fetchAll();
@@ -75,6 +139,34 @@ class User
             throw new Exception($e->getMessage());
         }
 
+        return $result;
+    }
+
+    /**
+     * Get all the users according to a filter. 
+     * @param   filter  The filter to apply to the research
+     * @param   from    From where the search beggin, default : 0
+     * @param   offset  The offset where the search end, default : 10
+     * @return  result  An associative array of all the users
+     */
+    public function GetUsersWithFilter($filter, $from = 0, $offset = 10)
+    {
+        $result = null;
+
+        try {
+
+            $filterBooleanMode = $this->FixInputSQL($filter);
+            $this->psGetUsersWithFilter->bindParam(':filter', $filterBooleanMode, PDO::PARAM_STR);
+            $this->psGetUsersWithFilter->bindParam(':from', $from, PDO::PARAM_INT);
+            $this->psGetUsersWithFilter->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $this->psGetUsersWithFilter->execute();
+
+            $result = $this->psGetUsersWithFilter->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
         return $result;
     }
 
@@ -133,10 +225,9 @@ class User
      * @param   pseudo      The pseudo of the user
      * @param   email       The email of the user
      * @param   password    The password of the user
-     * @param   permission  The level of permission of the user
      * @return  result      The last inserted ID
      */
-    public function AddUser($pseudo, $email, $password, $permission)
+    public function AddUser($pseudo, $email, $password)
     {
         $result = null;
         $createdAt = date("Y-m-d H:i:s");
@@ -146,7 +237,6 @@ class User
             $this->psAddUser->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
             $this->psAddUser->bindParam(':email', $email, PDO::PARAM_STR);
             $this->psAddUser->bindParam(':password', $password, PDO::PARAM_STR);
-            $this->psAddUser->bindParam(':permission', $permission, PDO::PARAM_INT);
             $this->psAddUser->bindParam(':createdAt', $createdAt, PDO::PARAM_STR);
 
             if ($this->psAddUser->execute())
@@ -166,10 +256,9 @@ class User
      * @param   pseudo      The new pseudo of the user
      * @param   email       The new email of the user
      * @param   password    The new password of the user
-     * @param   permission  The new level of permission of the user
      * @return  result      Return true, false or null
      */
-    public function UpdateUser($idUser, $pseudo, $email, $password, $permission)
+    public function UpdateUser($idUser, $pseudo, $email, $password)
     {
         $result = null;
 
@@ -179,7 +268,6 @@ class User
             $this->psUpdateUser->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
             $this->psUpdateUser->bindParam(':email', $email, PDO::PARAM_STR);
             $this->psUpdateUser->bindParam(':password', $password, PDO::PARAM_STR);
-            $this->psUpdateUser->bindParam(':permission', $permission, PDO::PARAM_INT);
 
             $result = $this->psUpdateUser->execute();
         } catch (PDOException $e) {
@@ -212,5 +300,28 @@ class User
         }
 
         return $result;
+    }
+
+    /**
+     * Fix an input to make it suitable for the expectation of an BOOLEAN TYPE search.
+     * @param   text            The text you want to fix
+     * @return  correctText     The text fixed
+     */
+    public function FixInputSQL($text)
+    {
+        $correctText = "";
+
+        $correctText = str_replace(['+', '-', '*', '~', '"', '\'', '(', ')', '<', '>', '@'], ' ', $text);
+        $correctText = preg_replace('/\s+/', ' ', $correctText); // remove all ussless space
+        $correctText = trim($correctText); // remove space before and after
+
+        if (empty($correctText)) {
+            return '';
+        }
+
+        $correctText = str_replace(' ', '* +', $correctText);
+        $correctText = $correctText . '*';
+
+        return $correctText;
     }
 }

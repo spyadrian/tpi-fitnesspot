@@ -39,7 +39,7 @@ if (empty($pseudo))
 // ---- CREATE USER ----
 
 if ($error == null) {
-    $myUser = $user->AddUser($pseudo, $email, $passwordHash, $user->PERMISSION_USER);
+    $myUser = $user->AddUser($pseudo, $email, $passwordHash);
 
     header("location: ../view/signIn.php");
     exit;

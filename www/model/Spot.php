@@ -179,7 +179,6 @@ class Spot
         try {
 
             $filterBooleanMode = $this->FixInputSQL($filter);
-            //throw new Exception($filterBooleanMode);
             $this->psGetSpotsWithFilter->bindParam(':filter', $filterBooleanMode, PDO::PARAM_STR);
             $this->psGetSpotsWithFilter->bindParam(':from', $from, PDO::PARAM_INT);
             $this->psGetSpotsWithFilter->bindParam(':offset', $offset, PDO::PARAM_INT);
@@ -356,9 +355,13 @@ class Spot
     {
         $correctText = "";
 
-        $correctText = str_replace(['+', '-', '*', '~', '"', '\'', '(', ')', '<', '>'], ' ', $text);
+        $correctText = str_replace(['+', '-', '*', '~', '"', '\'', '(', ')', '<', '>', '@'], ' ', $text);
         $correctText = preg_replace('/\s+/', ' ', $correctText); // remove all ussless space
-        $correctText = trim($correctText); // remove all ussless space
+        $correctText = trim($correctText); // remove space before and after
+
+        if (empty($correctText)) {
+            return '';
+        }
 
         $correctText = str_replace(' ', '* +', $correctText);
         $correctText = $correctText . '*';
