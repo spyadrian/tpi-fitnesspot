@@ -42,17 +42,26 @@ CREATE TABLE `comments` (
   KEY `comments_on_users_FK` (`idUser`),
   CONSTRAINT `comments_on_spots_FK` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comments_on_users_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comments`
+-- Table structure for table `likes`
 --
 
-LOCK TABLES `comments` WRITE;
-/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `likes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `likes` (
+  `idSpot` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `liked` tinyint(1) NOT NULL,
+  PRIMARY KEY (`idSpot`,`idUser`),
+  KEY `likes_user_FK` (`idUser`),
+  CONSTRAINT `likes_spots_FK` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON UPDATE CASCADE,
+  CONSTRAINT `likes_user_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `medias`
@@ -73,17 +82,8 @@ CREATE TABLE `medias` (
   KEY `medias_on_spots_FK` (`idSpot`),
   CONSTRAINT `medias_on_spots_FK` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `medias_on_users_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `medias`
---
-
-LOCK TABLES `medias` WRITE;
-/*!40000 ALTER TABLE `medias` DISABLE KEYS */;
-/*!40000 ALTER TABLE `medias` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `spots`
@@ -100,23 +100,16 @@ CREATE TABLE `spots` (
   `address` varchar(100) NOT NULL,
   `lat` double NOT NULL,
   `lon` double NOT NULL,
-  `grade` double NOT NULL DEFAULT '0',
+  `averageRate` double NOT NULL DEFAULT '0',
   `createdAt` datetime NOT NULL,
   `editedAt` datetime NOT NULL,
+  `numberLike` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idSpot`),
   KEY `spots_on_users_FK` (`idUser`),
+  FULLTEXT KEY `spots_name-address-detail_IDX` (`name`,`address`,`detail`),
   CONSTRAINT `spots_on_users_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1799 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `spots`
---
-
-LOCK TABLES `spots` WRITE;
-/*!40000 ALTER TABLE `spots` DISABLE KEYS */;
-/*!40000 ALTER TABLE `spots` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -133,17 +126,26 @@ CREATE TABLE `users` (
   `permission` int(11) NOT NULL DEFAULT '0',
   `createdAt` datetime NOT NULL,
   PRIMARY KEY (`idUser`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users`
+-- Table structure for table `votes`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `votes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `votes` (
+  `idSpot` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `rate` varchar(100) NOT NULL,
+  PRIMARY KEY (`idSpot`,`idUser`),
+  KEY `votes_users_FK` (`idUser`),
+  CONSTRAINT `votes_spots_FK` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON UPDATE CASCADE,
+  CONSTRAINT `votes_users_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Create User
@@ -185,4 +187,4 @@ GRANT Lock tables ON fitnesspot_tpi.* TO 'dbAdminFitnesspot'@'localhost';
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-04 10:52:06
+-- Dump completed on 2021-05-17 11:02:07
