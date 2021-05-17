@@ -4,6 +4,13 @@ require_once "dbConnection.php";
 
 class User
 {
+    // ---- CONST ----
+
+    public $PASSWORD_SEL = '0deiXu5WK7jx1yawZ5pZPMUm';
+    public $PERMISSION_GUESS = 0;
+    public $PERMISSION_USER = 1;
+    public $PERMISSION_ADMIN = 2;
+
     // ---- FIELDS ----
 
     private $psGetUsers = null;

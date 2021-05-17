@@ -29,10 +29,10 @@ function GetNavBar($activePage)
 
                 <ul class="navbar-nav w-50 d-flex justify-content-end">
                     <li class="nav-item">
-                        <a href="#" type="button" class="btn btn-link me-2">Sign Up</a>
+                        <a href="./signUp.php" type="button" class="btn btn-link me-2">Sign Up</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" type="button" class="btn btn-primary">Sign In</a>
+                        <a href="./signIn.php" type="button" class="btn btn-primary">Sign In</a>
                     </li>
                 </ul>
 
