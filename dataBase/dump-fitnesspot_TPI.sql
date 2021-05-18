@@ -23,6 +23,7 @@ USE `fitnesspot_tpi`;
 
 -- --------------------------------------------------------
 
+
 --
 -- Table structure for table `comments`
 --
@@ -42,7 +43,7 @@ CREATE TABLE `comments` (
   KEY `comments_on_users_FK` (`idUser`),
   CONSTRAINT `comments_on_spots_FK` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comments_on_users_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,12 +55,13 @@ DROP TABLE IF EXISTS `likes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `likes` (
   `idSpot` int(11) NOT NULL,
-  `idUser` int(11) NOT NULL,
+  `idUser` int(11) DEFAULT NULL,
   `liked` tinyint(1) NOT NULL,
-  PRIMARY KEY (`idSpot`,`idUser`),
-  KEY `likes_user_FK` (`idUser`),
-  CONSTRAINT `likes_spots_FK` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON UPDATE CASCADE,
-  CONSTRAINT `likes_user_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON UPDATE CASCADE
+  UNIQUE KEY `likes_un` (`idSpot`,`idUser`),
+  KEY `likes_idSpot_IDX` (`idSpot`) USING BTREE,
+  KEY `likes_idUser_IDX` (`idUser`) USING BTREE,
+  CONSTRAINT `likes_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `likes_FK_1` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -72,16 +74,13 @@ DROP TABLE IF EXISTS `medias`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `medias` (
   `idMedia` int(11) NOT NULL AUTO_INCREMENT,
-  `idUser` int(11) DEFAULT NULL,
-  `idSpot` int(11) DEFAULT NULL,
+  `idSpot` int(11) NOT NULL,
   `fileName` varchar(100) NOT NULL,
   `type` varchar(100) NOT NULL,
   `size` int(20) NOT NULL,
   PRIMARY KEY (`idMedia`),
-  KEY `medias_on_users_FK` (`idUser`),
   KEY `medias_on_spots_FK` (`idSpot`),
-  CONSTRAINT `medias_on_spots_FK` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `medias_on_users_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `medias_on_spots_FK` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -104,6 +103,7 @@ CREATE TABLE `spots` (
   `createdAt` datetime NOT NULL,
   `editedAt` datetime NOT NULL,
   `numberLike` int(11) NOT NULL DEFAULT '0',
+  `validate` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idSpot`),
   KEY `spots_on_users_FK` (`idUser`),
   FULLTEXT KEY `spots_name-address-detail_IDX` (`name`,`address`,`detail`),
@@ -123,10 +123,11 @@ CREATE TABLE `users` (
   `pseudo` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `permission` int(11) NOT NULL DEFAULT '0',
+  `permission` int(11) NOT NULL DEFAULT '1',
   `createdAt` datetime NOT NULL,
-  PRIMARY KEY (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`idUser`),
+  FULLTEXT KEY `users_pseudo-email_IDX` (`pseudo`,`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,12 +139,13 @@ DROP TABLE IF EXISTS `votes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `votes` (
   `idSpot` int(11) NOT NULL,
-  `idUser` int(11) NOT NULL,
+  `idUser` int(11) DEFAULT NULL,
   `rate` varchar(100) NOT NULL,
-  PRIMARY KEY (`idSpot`,`idUser`),
-  KEY `votes_users_FK` (`idUser`),
-  CONSTRAINT `votes_spots_FK` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON UPDATE CASCADE,
-  CONSTRAINT `votes_users_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON UPDATE CASCADE
+  UNIQUE KEY `votes_un` (`idSpot`,`idUser`),
+  KEY `votes_idUser_IDX` (`idUser`) USING BTREE,
+  KEY `votes_idSpot_IDX` (`idSpot`) USING BTREE,
+  CONSTRAINT `votes_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `votes_FK_1` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -187,4 +189,4 @@ GRANT Lock tables ON fitnesspot_tpi.* TO 'dbAdminFitnesspot'@'localhost';
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-17 11:02:07
+-- Dump completed on 2021-05-18 11:11:10
