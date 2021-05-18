@@ -1,5 +1,14 @@
 <?php
 require_once './navBar.php';
+require_once './session.php';
+
+
+// ---- SECURITY ----
+
+SetSessionLevel(1, './signIn.php');
+
+
+// ---- ERROR ----
 
 $error = filter_input(INPUT_GET, "error", FILTER_DEFAULT, FILTER_SANITIZE_STRING);
 $errorAlert;

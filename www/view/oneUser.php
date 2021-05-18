@@ -1,12 +1,44 @@
 <?php
 require_once './navBar.php';
+require_once './session.php';
+
+
+// ---- SECURITY ----
+
+$idUser = filter_input(INPUT_GET, 'idUser', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
+
+if (!isset($_SESSION['userId']) || ($_SESSION['userId'] != $idUser && $_SESSION['userPermission'] != '2')) {
+    header('location: ./home.php');
+    exit;
+}
+
+
+// ---- SUBMIT ----
 
 $submit = filter_input(INPUT_POST, 'updateUser_Submit', FILTER_DEFAULT);
-if (isset($submit)) {
+
+if (isset($submit) && $submit == 'Delete') {
+    require '../controller/deleteUser.php';
+
+    $submit = 'Disconnect';
+}
+
+if (isset($submit) && $submit == 'Disconnect') {
+    session_destroy();
+    $_SESSION = array();
+
+    header('location: ./home.php');
+    exit;
+}
+
+if (isset($submit) && $submit == 'Save') {
     require '../controller/updateUser.php';
 }
 
 require_once '../controller/getOneUser.php';
+
+
+// ---- ERROR ----
 
 $errorAlert;
 
@@ -14,7 +46,6 @@ if (isset($error)) {
     $errorAlert = '<div class="alert alert-danger alert-dismissible fade show mb-0" role="alert">' . $error
         . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
 }
-
 
 ?>
 
@@ -39,7 +70,6 @@ if (isset($error)) {
         <div class="d-flex justify-content-start align-items-end mt-5 mb-5">
             <p class="h2 me-3"><strong><?= $myUser['pseudo'] ?></strong></p>
             <p class="h2 text-muted text-end" style="font-size: 1rem; line-height: 1.5;"><?= $myUser['permission'] ?></p>
-
         </div>
 
         <!-- POTENTIAL ERROR -->
@@ -72,34 +102,18 @@ if (isset($error)) {
                         <!-- Password -->
                         <div class="mb-3">
                             <label for="updateUser_Password" class="form-label text-primary fs-5">Password </label>
-                            <input id="updateUser_Password" name="updateUser_Password" type="password" class="form-control" value='<?= $myUser['password']  ?>' require>
+                            <input id="updateUser_Password" name="updateUser_Password" type="password" class="form-control" require>
                         </div>
 
 
                         <!-- ? MAYBE AN IMAGE AVATAR -->
 
                         <div class="d-flex justify-content-end w-100 mt-4">
+                            <input id="updateUser_Submit" name="updateUser_Submit" type="submit" class="btn btn-dark w-20 me-5" value="Delete" />
+                            <input id="updateUser_Submit" name="updateUser_Submit" type="submit" class="btn btn-danger w-20 me-5" value="Disconnect" />
                             <input id="updateUser_Submit" name="updateUser_Submit" type="submit" class="btn btn-primary w-20" value="Save" />
                         </div>
                     </form>
-
-                    <!-- <h5 class="card-title">Card title</h5>
-
-                    <div class="d-flex flex-row justify-content-between align-items-start">
-                        <small class="d-flex justify-content-between w-33" data-bs-toggle="modal" data-bs-target="#exampleModal">grade</small>
-                        <p class="card-text text-muted">
-                            nusdf
-                            <i class="bi bi-heart-fill" style="font-size: 0.9rem;"></i>
-                        </p>
-                    </div>
-
-                    <p class="card-text mt-2"><b>adresse</b></p>
-
-                    <p class="card-text mt-2">detail</p>
-
-                    <div class="d-flex justify-content-end">
-                        <p class="card-text text-muted" style="font-size: 0.8rem;">create the</p>
-                    </div> -->
 
                 </div>
             </div>

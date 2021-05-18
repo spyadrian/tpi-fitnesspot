@@ -7,7 +7,7 @@ require_once "../model/Comment.php";
 
 $comment = new Comment();
 
-$idUser = 1; //! NOT SUPPOSE TO TAKE IT LIKE THAT 
+$idUser = $_SESSION['userId'];
 $idSpot = filter_input(INPUT_POST, 'addComment_IdSpot', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
 $content = filter_input(INPUT_POST, 'addComment_Content', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
 

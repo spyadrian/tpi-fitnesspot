@@ -1,5 +1,5 @@
 <?php
-
+require_once '../view/session.php';
 require_once "../model/User.php";
 
 
@@ -35,9 +35,8 @@ if (empty($email))
 // ---- RETURN HOME SET SESSION ----
 
 if ($error == null) {
-
-
-
+    $_SESSION["userId"] = $myUser[0]['idUser'];
+    $_SESSION['userPermission'] = $myUser[0]['permission'];
 
     header("location: ../view/home.php");
     exit;

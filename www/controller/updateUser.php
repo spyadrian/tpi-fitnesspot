@@ -7,7 +7,6 @@ require_once "../model/User.php";
 
 $user = new User();
 
-$idUser = 1;
 $pseudo = filter_input(INPUT_POST, 'updateUser_Pseudo', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
 $email = filter_input(INPUT_POST, 'updateUser_Email', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
 $password = filter_input(INPUT_POST, 'updateUser_Password', FILTER_DEFAULT, FILTER_SANITIZE_STRING);

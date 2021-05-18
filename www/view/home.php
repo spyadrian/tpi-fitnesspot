@@ -1,6 +1,8 @@
 <?php
 require_once './navBar.php';
 require_once '../controller/getSpotsAsCards.php';
+require_once './session.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -26,8 +28,8 @@ require_once '../controller/getSpotsAsCards.php';
             <!-- Search Bar -->
             <div class="w-33">
                 <div class="input-group shadow-lg">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search" />
-                    <button type="button" class="btn btn-primary" style="width: 100px;">
+                    <input id="searchBar" class="form-control" type="search" placeholder="Search" aria-label="Search" />
+                    <button type="button" class="btn btn-primary" style="width: 100px;" onclick="ResearchOnclick()">
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
@@ -70,8 +72,22 @@ require_once '../controller/getSpotsAsCards.php';
 
         </div>
 
+        <!-- BOUTON VIEW ALL -->
+        <div class="d-flex justify-content-center w-100">
+            <a href="./allSpots.php" type="button" class="btn btn-primary mb-5">See More</a>
+        </div>
 
     </div>
 </body>
+
+<script>
+    function ResearchOnclick() {
+        let research = document.getElementById('searchBar').value;
+        localStorage.clear();
+
+        localStorage.setItem('researchHome', research);
+        window.location.href = "./allSpots.php";
+    }
+</script>
 
 </html>

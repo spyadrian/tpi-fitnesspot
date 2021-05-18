@@ -25,7 +25,6 @@ switch ($myUser['permission']) {
     case 2:
         $myUser['permission'] = 'Super User';
         break;
-
     default:
         die;
         break;
