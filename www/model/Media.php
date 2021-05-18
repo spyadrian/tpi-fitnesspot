@@ -9,7 +9,6 @@ class Media
     private $psGetMedias = null;
     private $psGetMediasByIdSpot = null;
     private $psGetMedia = null;
-    private $psGetMediaByIdUser = null;
     private $psGetMediaByFileName = null;
     private $psAddMedia = null;
     private $psUpdateMedia = null;
@@ -28,10 +27,9 @@ class Media
         $sqlGetMedias = "SELECT * FROM medias LIMIT :limit";
         $sqlGetMediasByIdSpot = "SELECT * FROM medias WHERE idSpot = :idSpot LIMIT :limit";
         $sqlGetMedia = "SELECT * FROM medias WHERE idMedia = :idMedia LIMIT 1";
-        $sqlGetMediaByIdUser = "SELECT * FROM medias WHERE idUser = :idUser LIMIT 1";
         $sqlGetMediaByIdFileName = "SELECT * FROM medias WHERE fileName = :fileName LIMIT 1";
-        $sqlAddMedia = "INSERT INTO medias(idUser, idSpot, fileName, type, size) VALUES (:idUser, :idSpot, :fileName, :type, :size)";
-        $sqlUpdateMedia = "UPDATE medias SET idUser = :idUser, idSpot = :idSpot, fileName = :fileName, type = :type, size = :size WHERE idMedia = :idMedia";
+        $sqlAddMedia = "INSERT INTO medias(idSpot, fileName, type, size) VALUES (:idSpot, :fileName, :type, :size)";
+        $sqlUpdateMedia = "UPDATE medias SET idSpot = :idSpot, fileName = :fileName, type = :type, size = :size WHERE idMedia = :idMedia";
         $sqlDeleteMedia = "DELETE FROM medias WHERE idMedia = :idMedia";
 
         $this->psGetMedias = DBConnection::prepare($sqlGetMedias);
@@ -42,9 +40,6 @@ class Media
 
         $this->psGetMedia = DBConnection::prepare($sqlGetMedia);
         $this->psGetMedia->setFetchMode(PDO::FETCH_ASSOC);
-
-        $this->psGetMediaByIdUser = DBConnection::prepare($sqlGetMediaByIdUser);
-        $this->psGetMediaByIdUser->setFetchMode(PDO::FETCH_ASSOC);
 
         $this->psGetMediaByFileName = DBConnection::prepare($sqlGetMediaByIdFileName);
         $this->psGetMediaByFileName->setFetchMode(PDO::FETCH_ASSOC);
@@ -132,30 +127,6 @@ class Media
     }
 
     /**
-     * Get media by the id User.
-     * @param   idUser  The idUser of the media
-     * @return  result  An associative array with the media
-     */
-    public function GetMediaByIdUser($idUser)
-    {
-        $result = null;
-
-        try {
-
-            $this->psGetMediaByIdUser->bindParam(':idUser', $idUser, PDO::PARAM_INT);
-            $this->psGetMediaByIdUser->execute();
-
-            $result = $this->psGetMediaByIdUser->fetchAll();
-        } catch (PDOException $e) {
-
-            error_log($e->getMessage());
-            throw new Exception($e->getMessage());
-        }
-
-        return $result;
-    }
-
-    /**
      * Get media by his fileName.
      * @param   fileName    The fileName of the media
      * @return  result      An associative array with the media
@@ -181,20 +152,18 @@ class Media
 
     /**
      * Add an media.
-     * @param   idUser      The idUser of the media, default : null
      * @param   idSpot      The idSpot of the media, default : null
      * @param   fileName    The fileName of the media
      * @param   type        The type of the media
      * @param   size        The size of the media
      * @return  result      The last inserted ID
      */
-    public function AddMedia($idUser = null, $idSpot = null, $fileName, $type, $size)
+    public function AddMedia($idSpot = null, $fileName, $type, $size)
     {
         $result = null;
 
         try {
 
-            $this->psAddMedia->bindParam(':idUser', $idUser, PDO::PARAM_INT);
             $this->psAddMedia->bindParam(':idSpot', $idSpot, PDO::PARAM_INT);
             $this->psAddMedia->bindParam(':fileName', $fileName, PDO::PARAM_STR);
             $this->psAddMedia->bindParam(':type', $type, PDO::PARAM_STR);
@@ -214,21 +183,19 @@ class Media
     /**
      * Update an media.
      * @param   idMedia     The media id you want to update
-     * @param   idUser      The new idUser of the media, default : null
      * @param   idSpot      The new idSpot of the media, default : null
      * @param   fileName    The new fileName of the media
      * @param   type        The new type of the media
      * @param   size        The new size of the media
      * @return  result      Return true, false or null
      */
-    public function UpdateMedia($idMedia, $idUser = null, $idSpot = null, $fileName, $type, $size)
+    public function UpdateMedia($idMedia, $idSpot = null, $fileName, $type, $size)
     {
         $result = null;
 
         try {
 
             $this->psUpdateMedia->bindParam(':idMedia', $idMedia, PDO::PARAM_INT);
-            $this->psUpdateMedia->bindParam(':idUser', $idUser, PDO::PARAM_INT);
             $this->psUpdateMedia->bindParam(':idSpot', $idSpot, PDO::PARAM_INT);
             $this->psUpdateMedia->bindParam(':fileName', $fileName, PDO::PARAM_STR);
             $this->psUpdateMedia->bindParam(':type', $type, PDO::PARAM_STR);

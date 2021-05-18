@@ -20,6 +20,7 @@ class User
     private $psGetUsersWithFilter = null;
     private $psGetUsersWithFilterDESC = null;
     private $psGetUser = null;
+    private $psGetUserAdmin = null;
     private $psGetUserByEmailAndPassword = null;
     private $psAddUser = null;
     private $psUpdateUser = null;
@@ -42,6 +43,7 @@ class User
         $sqlGetUsersWithFilter = 'SELECT * FROM users WHERE MATCH(pseudo, email) AGAINST(:filter IN BOOLEAN MODE) ORDER BY pseudo ASC, email ASC LIMIT :from, :offset';
         $sqlGetUsersWithFilterDESC = 'SELECT * FROM users WHERE MATCH(pseudo, email) AGAINST(:filter IN BOOLEAN MODE) ORDER BY pseudo DESC, email ASC LIMIT :from, :offset';
         $sqlGetUser = "SELECT * FROM users WHERE idUser = :idUser LIMIT 1";
+        $sqlGetUserAdmin = "SELECT * FROM users WHERE permission = 2 LIMIT 1";
         $sqlGetUserByEmailAndPassword = "SELECT * FROM users WHERE email = :email AND password = :password LIMIT 1";
         $sqlAddUser = "INSERT INTO users(pseudo, email, password, createdAt) VALUES (:pseudo, :email, :password, :createdAt)";
         $sqlUpdateUser = "UPDATE users SET pseudo = :pseudo, email = :email, password = :password WHERE idUser = :idUser";
@@ -67,6 +69,9 @@ class User
 
         $this->psGetUser = DBConnection::prepare($sqlGetUser);
         $this->psGetUser->setFetchMode(PDO::FETCH_ASSOC);
+
+        $this->psGetUserAdmin = DBConnection::prepare($sqlGetUserAdmin);
+        $this->psGetUserAdmin->setFetchMode(PDO::FETCH_ASSOC);
 
         $this->psGetUserByEmailAndPassword = DBConnection::prepare($sqlGetUserByEmailAndPassword);
         $this->psGetUserByEmailAndPassword->setFetchMode(PDO::FETCH_ASSOC);
@@ -249,6 +254,28 @@ class User
             $this->psGetUser->execute();
 
             $result = $this->psGetUser->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get one user administrateur by id.
+     * @return  result  An associative array with the user
+     */
+    public function GetUserAdmin()
+    {
+        $result = null;
+
+        try {
+
+            $this->psGetUserAdmin->execute();
+
+            $result = $this->psGetUserAdmin->fetchAll();
         } catch (PDOException $e) {
 
             error_log($e->getMessage());

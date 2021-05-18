@@ -2,6 +2,7 @@
 
 require_once "../model/Spot.php";
 require_once "../model/Media.php";
+require_once "../model/User.php";
 
 
 // ---- CONST ----
@@ -17,12 +18,14 @@ $REP_IMAGE = '../asset/image/';
 
 $spot = new Spot();
 $media = new Media();
+$user = new User();
 
 $name = filter_input(INPUT_POST, 'addSpot_Name', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
 $detail = filter_input(INPUT_POST, 'addSpot_Detail', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
 $lat = filter_input(INPUT_POST, "addSpot_Lat", FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_FLOAT);
 $lon = filter_input(INPUT_POST, "addSpot_Lon", FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_FLOAT);
 
+$myAdmin = null;
 $files = null;
 
 if (isset($_FILES['addSpot_File'])) {
@@ -86,7 +89,7 @@ try {
             $fileExtention = pathinfo($f['name'], PATHINFO_EXTENSION);
             $filename = uniqid("", true) . '.' . $fileExtention;
 
-            $idMedia = $media->AddMedia(1, $idSpot, $filename, $f['type'], $f['size']); //! idUser hard code
+            $idMedia = $media->AddMedia($idSpot, $filename, $f['type'], $f['size']);
 
             if (is_numeric($idMedia)) {
 
@@ -100,6 +103,12 @@ try {
     $db->rollBack();
     $result = '<pre>Erreur : ' . $e->getMessage() . '</pre>';
 }
+
+
+// ---- SEND MAIL ----
+
+$myAdmin = $user->GetUserAdmin();
+mail($myAdmin[0]['email'], "A Spot has been added !", "Hi, \n A new Spot is up, with the id : " . $idSpot);
 
 
 // ---- Return to Home ----
