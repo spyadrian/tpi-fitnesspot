@@ -16,7 +16,9 @@ class User
     private $psGetCount = null;
     private $psGetCountWithFilter = null;
     private $psGetUsers = null;
+    private $psGetUsersDESC = null;
     private $psGetUsersWithFilter = null;
+    private $psGetUsersWithFilterDESC = null;
     private $psGetUser = null;
     private $psGetUserByEmailAndPassword = null;
     private $psAddUser = null;
@@ -36,11 +38,13 @@ class User
         $sqlGetCount = 'SELECT count(idUser) as count from users';
         $sqlGetCountWithFilter = 'SELECT count(idUser) as count from users WHERE MATCH(pseudo, email) AGAINST(:filter IN BOOLEAN MODE)';
         $sqlGetUsers = "SELECT * FROM users ORDER BY pseudo ASC, email ASC LIMIT :from, :offset";
+        $sqlGetUsersDESC = "SELECT * FROM users ORDER BY pseudo DESC, email ASC LIMIT :from, :offset";
         $sqlGetUsersWithFilter = 'SELECT * FROM users WHERE MATCH(pseudo, email) AGAINST(:filter IN BOOLEAN MODE) ORDER BY pseudo ASC, email ASC LIMIT :from, :offset';
+        $sqlGetUsersWithFilterDESC = 'SELECT * FROM users WHERE MATCH(pseudo, email) AGAINST(:filter IN BOOLEAN MODE) ORDER BY pseudo DESC, email ASC LIMIT :from, :offset';
         $sqlGetUser = "SELECT * FROM users WHERE idUser = :idUser LIMIT 1";
         $sqlGetUserByEmailAndPassword = "SELECT * FROM users WHERE email = :email AND password = :password LIMIT 1";
         $sqlAddUser = "INSERT INTO users(pseudo, email, password, createdAt) VALUES (:pseudo, :email, :password, :createdAt)";
-        $sqlUpdateUser = "UPDATE users SET pseudo = :pseudo, email = :email, password = :password, WHERE idUser = :idUser";
+        $sqlUpdateUser = "UPDATE users SET pseudo = :pseudo, email = :email, password = :password WHERE idUser = :idUser";
         $sqlDeleteUser = "DELETE FROM users WHERE idUser = :idUser";
 
         $this->psGetCount = DBConnection::prepare($sqlGetCount);
@@ -52,8 +56,14 @@ class User
         $this->psGetUsers = DBConnection::prepare($sqlGetUsers);
         $this->psGetUsers->setFetchMode(PDO::FETCH_ASSOC);
 
+        $this->psGetUsersDESC = DBConnection::prepare($sqlGetUsersDESC);
+        $this->psGetUsersDESC->setFetchMode(PDO::FETCH_ASSOC);
+
         $this->psGetUsersWithFilter = DBConnection::prepare($sqlGetUsersWithFilter);
         $this->psGetUsersWithFilter->setFetchMode(PDO::FETCH_ASSOC);
+
+        $this->psGetUsersWithFilterDESC = DBConnection::prepare($sqlGetUsersWithFilterDESC);
+        $this->psGetUsersWithFilterDESC->setFetchMode(PDO::FETCH_ASSOC);
 
         $this->psGetUser = DBConnection::prepare($sqlGetUser);
         $this->psGetUser->setFetchMode(PDO::FETCH_ASSOC);
@@ -143,6 +153,32 @@ class User
     }
 
     /**
+     * Get all users pseudo DESC.
+     * @param   from    From where the search beggin, default : 0
+     * @param   offset  The offset where the search end, default : 10
+     * @return  result  An associative array of all the users
+     */
+    public function GetUsersDESC($from = 0, $offset = 10)
+    {
+        $result = null;
+
+        try {
+
+            $this->psGetUsersDESC->bindParam(':from', $from, PDO::PARAM_INT);
+            $this->psGetUsersDESC->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $this->psGetUsersDESC->execute();
+
+            $result = $this->psGetUsersDESC->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
      * Get all the users according to a filter. 
      * @param   filter  The filter to apply to the research
      * @param   from    From where the search beggin, default : 0
@@ -162,6 +198,34 @@ class User
             $this->psGetUsersWithFilter->execute();
 
             $result = $this->psGetUsersWithFilter->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+        return $result;
+    }
+
+    /**
+     * Get all the users according to a filter pseudo desc. 
+     * @param   filter  The filter to apply to the research
+     * @param   from    From where the search beggin, default : 0
+     * @param   offset  The offset where the search end, default : 10
+     * @return  result  An associative array of all the users
+     */
+    public function GetUsersWithFilterDESC($filter, $from = 0, $offset = 10)
+    {
+        $result = null;
+
+        try {
+
+            $filterBooleanMode = $this->FixInputSQL($filter);
+            $this->psGetUsersWithFilterDESC->bindParam(':filter', $filterBooleanMode, PDO::PARAM_STR);
+            $this->psGetUsersWithFilterDESC->bindParam(':from', $from, PDO::PARAM_INT);
+            $this->psGetUsersWithFilterDESC->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $this->psGetUsersWithFilterDESC->execute();
+
+            $result = $this->psGetUsersWithFilterDESC->fetchAll();
         } catch (PDOException $e) {
 
             error_log($e->getMessage());

@@ -6,6 +6,7 @@ require_once "../model/Spot.php";
 // ---- FIELDS ---- 
 
 $filter = filter_input(INPUT_POST, 'filter', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
+$onlyPopular = filter_input(INPUT_POST, 'onlyPopular', FILTER_DEFAULT);
 
 $spot = new Spot();
 $count = 0;
@@ -15,9 +16,18 @@ $count = 0;
 
 
 if (empty($filter)) {
-    $count = $spot->GetCount();
+
+    if ($onlyPopular == "true") {
+        $count = $spot->GetCountOnlyPopular();
+    } else {
+        $count = $spot->GetCount();
+    }
 } else {
-    $count = $spot->GetCountWithFilter($filter);
+    if ($onlyPopular == "true") {
+        $count = $spot->GetCountWithFilterOnlyPopular($filter);
+    } else {
+        $count = $spot->GetCountWithFilter($filter);
+    }
 }
 
 echo json_encode($count);

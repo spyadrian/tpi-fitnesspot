@@ -1,8 +1,35 @@
 <?php
 require_once './navBar.php';
+require_once './session.php';
+
+
+// ---- SECURITY ----
+
+$actionAllowed = true;
+$adminActionAllowed = false;
+if (!isset($_SESSION['userId'])) {
+    $actionAllowed = false;
+
+    if (isset($_SESSION['userPermission']) && $_SESSION['userPermission'] > 2)
+        $adminActionAllowed = true;
+}
+
+
+// ---- SUBMIT ----
+
+$submit = filter_input(INPUT_POST, 'addComment_Submit', FILTER_DEFAULT);
+
+if (isset($submit) && $submit == 'Add Comment') {
+
+    SetSessionLevel(1, './signIn.php');
+    require_once '../controller/addComment.php';
+}
+
 require_once '../controller/getOneSpot.php';
 
-$error = filter_input(INPUT_GET, "error", FILTER_DEFAULT, FILTER_SANITIZE_STRING);
+
+// ---- ERROR ----
+
 $errorAlert;
 
 if (isset($error)) {
@@ -30,9 +57,32 @@ if (isset($error)) {
     <div class="d-flex flex-column h-90 w-100 px-6 bg-main">
 
         <!-- HEADER -->
-        <div class="d-flex justify-content-start mt-5 mb-5">
-            <p class="h2"><strong><?= empty($mySpot['name']) ? 'Spot Nameless' : $mySpot['name'] ?></strong></p>
-        </div>
+
+        <?php if ($adminActionAllowed) : ?>
+
+            <div class="d-flex justify-content-between align-items-center mt-5 mb-5">
+
+                <div class="d-flex justify-content-start align-items-end">
+                    <p class="h2 me-3"><strong><?= empty($mySpot['name']) ? 'Spot Nameless' : $mySpot['name'] ?></strong></p>
+                    <p class="h2 text-muted text-end" style="font-size: 1rem; line-height: 1.5;"><?= ($mySpot['validate'] == '0') ? 'Not Official' : 'Official' ?></p>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center">
+                    <a href="../controller/valideSpot.php?idSpot=<?= $mySpot['idSpot'] ?>" type="button" class="btn btn-primary me-3 h-100">Valide</a>
+                    <a href="../controller/deleteSpot.php?idSpot=<?= $mySpot['idSpot'] ?>" type="button" class="btn btn-danger h-100">Delete</a>
+                </div>
+
+            </div>
+
+        <?php else : ?>
+
+            <div class="d-flex justify-content-start align-items-end mt-5 mb-5">
+                <p class="h2 me-3"><strong><?= empty($mySpot['name']) ? 'Spot Nameless' : $mySpot['name'] ?></strong></p>
+                <p class="h2 text-muted text-end" style="font-size: 1rem; line-height: 1.5;"><?= ($mySpot['validate'] == '0') ? 'Not Official' : 'Official' ?></p>
+            </div>
+
+        <?php endif; ?>
+
 
         <!-- BODY -->
         <div class="d-flex flex-column w-100">
@@ -69,8 +119,10 @@ if (isset($error)) {
                     <div class="card-body">
 
                         <div class="d-flex flex-row justify-content-between align-items-start">
-                            <small class="d-flex justify-content-between w-33" data-bs-toggle="modal" data-bs-target="#exampleModal"><?= ConvertGradeToStar($mySpot['averageRate']); ?></small>
-                            <p class="card-text text-muted" onclick="AddLike()" <?= empty($myLike) ? '' : 'style="color: #ff5454 !important;"' ?>>
+                            <small id="containerStar" class="d-flex justify-content-between w-33" data-bs-toggle="modal" data-bs-target="#exampleModal"><?= ConvertGradeToStar($mySpot['averageRate']); ?></small>
+
+                            <!-- Only if action is alowed -->
+                            <p id="containerLike" class="card-text text-muted" <?= $actionAllowed ? 'onclick="AddLike()"' : '' ?> <?= empty($myLike) ? '' : 'style="color: #ff5454 !important;"' ?>>
                                 <?= $mySpot['numberLike'] ?>
                                 <i class="bi bi-heart-fill" style="font-size: 0.9rem;"></i>
                             </p>
@@ -97,10 +149,7 @@ if (isset($error)) {
                 <!-- hidden lat/lon & id -->
                 <input id="mySpotLat" name="mySpotLat" type="hidden" value="<?= $mySpot['lat'] ?>">
                 <input id="mySpotLon" name="mySpotLon" type="hidden" value="<?= $mySpot['lon'] ?>">
-
                 <input id="mySpotId" name="mySpotId" type="hidden" value="<?= $mySpot['idSpot'] ?>">
-                <input id="myUserId" name="myUserId" type="hidden" value="<?= $mySpot['idUser'] ?>">
-
                 <input id="myUserLiked" name="myUserLiked" type="hidden" value="<?= $myLike ?>">
 
 
@@ -117,7 +166,14 @@ if (isset($error)) {
                                 <?php include './ratingStar.php' ?>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="SendRate()">Send rate</button>
+
+                                <!-- Only if action is alowed -->
+                                <?php if ($actionAllowed) : ?>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="SendRate()">Send rate</button>
+                                <?php else : ?>
+                                    <a href="./signIn.php" type="button" class="btn btn-primary">Send rate</a>
+                                <?php endif; ?>
+
                             </div>
                         </div>
                     </div>
@@ -139,7 +195,19 @@ if (isset($error)) {
 
                         <div class="card shadow mb-4">
                             <div class="card-body">
-                                <p class="card-text mb-2"><b><?= $c['pseudo'] ?></b></p>
+
+                                <?php if ($adminActionAllowed) : ?>
+
+                                    <div class="d-flex justify-content-between">
+                                        <p class="card-text mb-2"><b><?= isset($c['pseudo']) ? $c['pseudo'] : '[deleted user]' ?></b></p>
+                                        <a href="../controller/deleteComment.php?idComment=<?= $c['idComment'] ?>&idSpot=<?= $mySpot['idSpot'] ?>" type="button" class="btn btn-danger">Delete</a>
+                                    </div>
+
+                                <?php else : ?>
+
+                                    <p class="card-text mb-2"><b><?= isset($c['pseudo']) ? $c['pseudo'] : '[deleted user]' ?></b></p>
+
+                                <?php endif; ?>
 
                                 <p class="card-text mb-0"><?= $c['content'] ?></p>
 
@@ -151,11 +219,13 @@ if (isset($error)) {
 
                     <?php endforeach; ?>
 
+                    <?php if (empty($myComments)) echo 'Sorry but there are no comments yet. Add one!'; ?>
+
                 </div>
 
                 <!-- ADD COMMENT -->
                 <div class="d-flex flex-column align-items-end w-30">
-                    <form class="w-100 shadow-lg rounded-30 p-5" action="../controller/addComment.php" method="POST">
+                    <form class="w-100 shadow-lg rounded-30 p-5" action="#" method="POST">
 
                         <h4><strong>Add Comment </strong></h4>
 
@@ -167,7 +237,7 @@ if (isset($error)) {
 
                         <input id="addComment_IdSpot" name="addComment_IdSpot" type="hidden" value="<?= $mySpot['idSpot'] ?>">
 
-                        <input type="submit" class="btn btn-primary mt-4 w-100" value="Add Comment" />
+                        <input id="addComment_Submit" name="addComment_Submit" type="submit" class="btn btn-primary mt-4 w-100" value="Add Comment" />
                     </form>
                 </div>
 

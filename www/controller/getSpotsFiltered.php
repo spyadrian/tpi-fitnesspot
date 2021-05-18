@@ -14,6 +14,7 @@ $media = new Media();
 $filter = filter_input(INPUT_POST, 'filter', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
 $from = filter_input(INPUT_POST, 'from', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
 $offset = filter_input(INPUT_POST, 'offset', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
+$onlyPopular = filter_input(INPUT_POST, 'onlyPopular', FILTER_DEFAULT);
 
 $someSpots = [];
 
@@ -22,9 +23,18 @@ $someSpots = [];
 
 
 if (empty($filter)) {
-    $someSpots = $spot->GetSpotsOrderByGrade($from, $offset);
+
+    if ($onlyPopular == "true") {
+        $someSpots = $spot->GetSpotsOrderByGradeOnlyPopular($from, $offset);
+    } else {
+        $someSpots = $spot->GetSpotsOrderByGrade($from, $offset);
+    }
 } else {
-    $someSpots = $spot->GetSpotsWithFilter($filter, $from, $offset);
+    if ($onlyPopular == "true") {
+        $someSpots = $spot->GetSpotsWithFilterOnlyPopular($filter, $from, $offset);
+    } else {
+        $someSpots = $spot->GetSpotsWithFilter($filter, $from, $offset);
+    }
 }
 
 
@@ -58,7 +68,7 @@ foreach ($someSpots as $s) : ?>
             <!-- Text & Star -->
             <div class="d-flex flex-column justify-content-center align-items-start w-15">
                 <h3><?= empty($s['name']) ? 'Spot Nameless' : $s['name'] ?></h3>
-                <small class="d-flex justify-content-between w-33"><?= ConvertGradeToStar($s['averageRate']); ?></small>
+                <small id="containerStar" class="d-flex justify-content-between w-33"><?= ConvertGradeToStar($s['averageRate']); ?></small>
             </div>
 
             <!-- Address -->

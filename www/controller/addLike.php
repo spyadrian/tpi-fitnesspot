@@ -1,21 +1,22 @@
 <?php
 
 require_once "../model/Like.php";
+require_once '../view/session.php';
 
 
 // ---- FIELDS ---- 
 
 $like = new Like();
 
+$idUser = $_SESSION['userId'];
 $idSpot = filter_input(INPUT_POST, 'idSpot', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
-$idUser = filter_input(INPUT_POST, 'idUser', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT); //! not suppose to get it like that
 $liked = filter_input(INPUT_POST, 'liked', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
 $liked = ($liked == "1") ? "0" : "1";
 
 $myLike = null;
 
 
-// ---- ADD / UPDATE VOTE ----
+// ---- ADD / UPDATE LIKE ----
 
 $myLike = $like->GetLikeById($idSpot, $idUser);
 

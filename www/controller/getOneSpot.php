@@ -16,6 +16,9 @@ $like = new Like();
 $comment = new Comment();
 
 $idSpot = filter_input(INPUT_GET, 'idSpot', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
+$idUser = null;
+if ($actionAllowed)
+    $idUser = $_SESSION['userId'];
 
 $mySpot = null;
 $myMedias = [];
@@ -40,10 +43,11 @@ if (empty($myMedias)) $myMedias[0]['fileName'] = $NO_IMAGE;
 // ---- GET LIKE ----
 
 // if the user liked the spot
-$myLike = $like->GetLikeById($mySpot['idSpot'], $mySpot['idUser']);
-if (empty($myLike) || $myLike[0]['liked'] == "0") $myLike = "0";
-else $myLike = "1";
-
+if ($actionAllowed) {
+    $myLike = $like->GetLikeById($mySpot['idSpot'], $idUser);
+    if (empty($myLike) || $myLike[0]['liked'] == "0") $myLike = "0";
+    else $myLike = "1";
+}
 
 // ---- GET COMMENT ----
 

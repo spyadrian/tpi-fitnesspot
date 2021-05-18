@@ -7,14 +7,19 @@ class Spot
     // ---- FIELDS ----
 
     private $psGetCount = null;
+    private $psGetCountOnlyPopular = null;
     private $psGetCountWithFilter = null;
+    private $psGetCountWithFilterOnlyPopular = null;
     private $psGetSpots = null;
     private $psGetSpotsOrderByGrade = null;
+    private $psGetSpotsOrderByGradeOnlyPopular = null;
     private $psGetSpotsWithFilter = null;
+    private $psGetSpotsWithFilterOnlyPopular = null;
     private $psGetSpotsBetweenLonLat = null;
     private $psGetSpot = null;
     private $psAddSpot = null;
     private $psUpdateSpot = null;
+    private $psValideSpot = null;
     private $psDeleteSpot = null;
 
 
@@ -28,22 +33,32 @@ class Spot
     function __construct()
     {
         $sqlGetCount = 'SELECT count(idSpot) as count from spots';
+        $sqlGetCountOnlyPopular = 'SELECT count(idSpot) as count from spots WHERE averageRate >= 3';
         $sqlGetCountWithFilter = 'SELECT count(idSpot) as count from spots WHERE MATCH(name, address, detail) AGAINST(:filter IN BOOLEAN MODE)';
+        $sqlGetCountWithFilterOnlyPopular = 'SELECT count(idSpot) as count from spots WHERE MATCH(name, address, detail) AGAINST(:filter IN BOOLEAN MODE) AND averageRate >= 3';
         $sqlGetSpots = 'SELECT * FROM spots LIMIT :limit';
         $sqlGetSpotsOrderByGrade = 'SELECT * FROM spots ORDER BY averageRate DESC LIMIT :from, :offset';
+        $sqlGetSpotsOrderByGradeOnlyPopular = 'SELECT * FROM spots WHERE averageRate >= 3 ORDER BY averageRate DESC LIMIT :from, :offset';
         $sqlGetSpotsWithFilter = 'SELECT * FROM spots WHERE MATCH(name, address, detail) AGAINST(:filter IN BOOLEAN MODE) ORDER BY CASE WHEN name = "" THEN 1 ELSE 0 end, name asc LIMIT :from, :offset';
+        $sqlGetSpotsWithFilterOnlyPopular = 'SELECT * FROM spots WHERE MATCH(name, address, detail) AGAINST(:filter IN BOOLEAN MODE) AND averageRate >= 3 ORDER BY CASE WHEN name = "" THEN 1 ELSE 0 end, name asc LIMIT :from, :offset';
         $sqlGetSpotsBetweenLonLat = 'SELECT * FROM spots WHERE lat BETWEEN :latMin AND :latMax AND lon BETWEEN :lonMin AND :lonMax LIMIT :limit';
         $sqlGetSpot = 'SELECT * FROM spots WHERE idSpot = :idSpot LIMIT 1';
         $sqlAddSpot = 'INSERT INTO spots(idUser, name, detail, address, lat, lon, createdAt, editedAt) VALUES (:idUser, :name, :detail, :address, :lat, :lon, :createdAt, :editedAt)';
         $sqlUpdateSpot = 'UPDATE spots SET idUser = :idUser, name = :name, detail = :detail, address = :address, lat = :lat, lon = :lon, averageRate = :averageRate, editedAt = :editedAt WHERE idSpot = :idSpot';
+        $sqlValideSpot = 'UPDATE spots SET validate = :validate, editedAt = :editedAt WHERE idSpot = :idSpot';
         $sqlDeleteSpot = 'DELETE FROM spots WHERE idSpot = :idSpot';
 
         $this->psGetCount = DBConnection::prepare($sqlGetCount);
         $this->psGetCount->setFetchMode(PDO::FETCH_ASSOC);
 
+        $this->psGetCountOnlyPopular = DBConnection::prepare($sqlGetCountOnlyPopular);
+        $this->psGetCountOnlyPopular->setFetchMode(PDO::FETCH_ASSOC);
+
         $this->psGetCountWithFilter = DBConnection::prepare($sqlGetCountWithFilter);
         $this->psGetCountWithFilter->setFetchMode(PDO::FETCH_ASSOC);
 
+        $this->psGetCountWithFilterOnlyPopular = DBConnection::prepare($sqlGetCountWithFilterOnlyPopular);
+        $this->psGetCountWithFilterOnlyPopular->setFetchMode(PDO::FETCH_ASSOC);
 
         $this->psGetSpots = DBConnection::prepare($sqlGetSpots);
         $this->psGetSpots->setFetchMode(PDO::FETCH_ASSOC);
@@ -51,8 +66,14 @@ class Spot
         $this->psGetSpotsOrderByGrade = DBConnection::prepare($sqlGetSpotsOrderByGrade);
         $this->psGetSpotsOrderByGrade->setFetchMode(PDO::FETCH_ASSOC);
 
+        $this->psGetSpotsOrderByGradeOnlyPopular = DBConnection::prepare($sqlGetSpotsOrderByGradeOnlyPopular);
+        $this->psGetSpotsOrderByGradeOnlyPopular->setFetchMode(PDO::FETCH_ASSOC);
+
         $this->psGetSpotsWithFilter = DBConnection::prepare($sqlGetSpotsWithFilter);
         $this->psGetSpotsWithFilter->setFetchMode(PDO::FETCH_ASSOC);
+
+        $this->psGetSpotsWithFilterOnlyPopular = DBConnection::prepare($sqlGetSpotsWithFilterOnlyPopular);
+        $this->psGetSpotsWithFilterOnlyPopular->setFetchMode(PDO::FETCH_ASSOC);
 
         $this->psGetSpotsBetweenLonLat = DBConnection::prepare($sqlGetSpotsBetweenLonLat);
         $this->psGetSpotsBetweenLonLat->setFetchMode(PDO::FETCH_ASSOC);
@@ -62,6 +83,7 @@ class Spot
 
         $this->psAddSpot = DBConnection::prepare($sqlAddSpot);
         $this->psUpdateSpot = DBConnection::prepare($sqlUpdateSpot);
+        $this->psValideSpot = DBConnection::prepare($sqlValideSpot);
         $this->psDeleteSpot = DBConnection::prepare($sqlDeleteSpot);
     }
 
@@ -91,6 +113,28 @@ class Spot
     }
 
     /**
+     * Count all spots OnlyPopular.
+     * @return  result  An associative array of the count of the spots.
+     */
+    public function GetCountOnlyPopular()
+    {
+        $result = null;
+
+        try {
+
+            $this->psGetCountOnlyPopular->execute();
+
+            $result = $this->psGetCountOnlyPopular->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
      * Count all spots with a filter.
      * @param   filter  The filter to apply to the research
      * @return  result  An associative array of the count of the spots.
@@ -106,6 +150,31 @@ class Spot
             $this->psGetCountWithFilter->execute();
 
             $result = $this->psGetCountWithFilter->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
+     * Count all spots with a filter OnlyPopular. 
+     * @param   filter  The filter to apply to the research
+     * @return  result  An associative array of the count of the spots.
+     */
+    public function GetCountWithFilterOnlyPopular($filter)
+    {
+        $result = null;
+
+        try {
+
+            $filterBooleanMode = $this->FixInputSQL($filter);
+            $this->psGetCountWithFilterOnlyPopular->bindParam(':filter', $filterBooleanMode, PDO::PARAM_STR);
+            $this->psGetCountWithFilterOnlyPopular->execute();
+
+            $result = $this->psGetCountWithFilterOnlyPopular->fetchAll();
         } catch (PDOException $e) {
 
             error_log($e->getMessage());
@@ -166,6 +235,32 @@ class Spot
     }
 
     /**
+     * Get all spots order by averageRate OnlyPopular.
+     * @param   from    From where the search beggin, default : 0
+     * @param   offset  The offset where the search end, default : 10
+     * @return  result  An associative array of all the spots
+     */
+    public function GetSpotsOrderByGradeOnlyPopular($from = 0, $offset = 10)
+    {
+        $result = null;
+
+        try {
+
+            $this->psGetSpotsOrderByGradeOnlyPopular->bindParam(':from', $from, PDO::PARAM_INT);
+            $this->psGetSpotsOrderByGradeOnlyPopular->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $this->psGetSpotsOrderByGradeOnlyPopular->execute();
+
+            $result = $this->psGetSpotsOrderByGradeOnlyPopular->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
      * Get all the spots according to a filter. 
      * @param   filter  The filter to apply to the research
      * @param   from    From where the search beggin, default : 0
@@ -185,6 +280,34 @@ class Spot
             $this->psGetSpotsWithFilter->execute();
 
             $result = $this->psGetSpotsWithFilter->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+        return $result;
+    }
+
+    /**
+     * Get all the spots according to a filter OnlyPopular. 
+     * @param   filter  The filter to apply to the research
+     * @param   from    From where the search beggin, default : 0
+     * @param   offset  The offset where the search end, default : 10
+     * @return  result  An associative array of all the spots
+     */
+    public function GetSpotsWithFilterOnlyPopular($filter, $from = 0, $offset = 10)
+    {
+        $result = null;
+
+        try {
+
+            $filterBooleanMode = $this->FixInputSQL($filter);
+            $this->psGetSpotsWithFilterOnlyPopular->bindParam(':filter', $filterBooleanMode, PDO::PARAM_STR);
+            $this->psGetSpotsWithFilterOnlyPopular->bindParam(':from', $from, PDO::PARAM_INT);
+            $this->psGetSpotsWithFilterOnlyPopular->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $this->psGetSpotsWithFilterOnlyPopular->execute();
+
+            $result = $this->psGetSpotsWithFilterOnlyPopular->fetchAll();
         } catch (PDOException $e) {
 
             error_log($e->getMessage());
@@ -314,6 +437,33 @@ class Spot
             $this->psUpdateSpot->bindParam(':editedAt', $editedAt, PDO::PARAM_STR);
 
             $result = $this->psUpdateSpot->execute();
+        } catch (PDOException $e) {
+
+            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
+     * Update an spot.
+     * @param   idSpot      The spot id you want to update
+     * @param   validate    The new state of validate
+     * @return  result      Return true, false or null
+     */
+    public function ValideSpot($idSpot, $validate)
+    {
+        $result = null;
+        $editedAt = date('Y-m-d H:i:s');
+
+        try {
+
+            $this->psValideSpot->bindParam(':idSpot', $idSpot, PDO::PARAM_INT);
+            $this->psValideSpot->bindParam(':validate', $validate, PDO::PARAM_INT);
+            $this->psValideSpot->bindParam(':editedAt', $editedAt, PDO::PARAM_STR);
+
+            $result = $this->psValideSpot->execute();
         } catch (PDOException $e) {
 
             error_log($e->getMessage());

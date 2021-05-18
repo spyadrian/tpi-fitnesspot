@@ -12,6 +12,7 @@ $user = new User();
 $filter = filter_input(INPUT_POST, 'filter', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
 $from = filter_input(INPUT_POST, 'from', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
 $offset = filter_input(INPUT_POST, 'offset', FILTER_DEFAULT, FILTER_SANITIZE_NUMBER_INT);
+$filterPseudo = filter_input(INPUT_POST, 'filterPseudo', FILTER_DEFAULT, FILTER_SANITIZE_STRING);
 
 $someUsers = [];
 
@@ -19,9 +20,20 @@ $someUsers = [];
 // ---- GET SPOT ----
 
 if (empty($filter)) {
-    $someUsers = $user->GetUsers($from, $offset);
+
+    if ($filterPseudo == "ASC") {
+
+        $someUsers = $user->GetUsers($from, $offset);
+    } else {
+        $someUsers = $user->GetUsersDESC($from, $offset);
+    }
 } else {
-    $someUsers = $user->GetUsersWithFilter($filter, $from, $offset);
+    if ($filterPseudo == "ASC") {
+
+        $someUsers = $user->GetUsersWithFilter($filter, $from, $offset);
+    } else {
+        $someUsers = $user->GetUsersWithFilterDESC($filter, $from, $offset);
+    }
 }
 
 
