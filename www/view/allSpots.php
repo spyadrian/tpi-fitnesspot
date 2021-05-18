@@ -30,8 +30,8 @@ require_once './navBar.php';
             <div class="d-flex justify-content-between">
 
                 <!-- Filter -->
-                <div class="input-group w-50">
-                    <!-- Only Popular -->
+                <div id="containerOnlyPopular" class="input-group w-50" onclick="SetOnlyPopular()" style="color: #212529;">
+                    Only Popular <i class="bi bi-star-fill ms-2"></i>
                 </div>
 
                 <!-- Search Bar -->

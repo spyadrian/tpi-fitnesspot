@@ -1,5 +1,12 @@
 <?php
 require_once './navBar.php';
+require_once './session.php';
+
+
+// ---- SECURITY ----
+
+SetSessionLevel(2);
+
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +33,12 @@ require_once './navBar.php';
 
         <!-- FILTRE & SEARCH -->
         <div>
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-between">
+
+                <!-- Filter -->
+                <div class="input-group w-50" onclick="SetFilterPseudo()">
+                    Filter Pseudo <i id="arrowFilterPseudo" class="bi bi-arrow-down ms-2"></i>
+                </div>
 
                 <!-- Search Bar -->
                 <div class="input-group w-50">
@@ -41,7 +53,7 @@ require_once './navBar.php';
             <hr class="mt-2">
         </div>
 
-        <!-- LIST SPOTS -->
+        <!-- LIST USER -->
         <div id="containerUsers" class="d-flex flex-column justify-content-around mt-5">
 
             <!-- Here will be print all cards -->

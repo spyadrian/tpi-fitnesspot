@@ -3,6 +3,7 @@
 let currentPage;
 let itemsPerPage;
 let numberPage;
+let onlyPopular;
 
 // ---- CALL FUNC ----
 
@@ -14,8 +15,14 @@ async function OnStart() {
     currentPage = 1;
     itemsPerPage = 6;
     numberPage = await GetNumberPage();
+    onlyPopular = false;
 
-    SetPage(1);
+    if (localStorage.getItem("researchHome") != null) {
+        SetResearch(localStorage.getItem("researchHome"));
+        localStorage.clear();
+    } else {
+        SetPage(1);
+    }
 }
 
 // --- SPOTS ---
@@ -44,6 +51,7 @@ async function GetSpotsFiltered() {
             filter: filter,
             from: from,
             offset: offset,
+            onlyPopular: onlyPopular,
         },
         success: function (result) {
             if (result == "") result = "There are no spots that match your specifications.";
@@ -61,6 +69,7 @@ async function GetNumberPage() {
         type: "POST",
         data: {
             filter: filter,
+            onlyPopular: onlyPopular,
         },
         success: function (result) {
             let count = JSON.parse(result)[0]["count"];
@@ -191,4 +200,22 @@ function SetStateDisabled(button, state) {
 
 function SetTextButton(button, text) {
     button.firstChild.innerHTML = text;
+}
+
+function SetOnlyPopular() {
+    let containerOnlyPopular = document.getElementById("containerOnlyPopular");
+
+    if (containerOnlyPopular.classList.contains("active")) {
+        containerOnlyPopular.classList.remove("active");
+        containerOnlyPopular.style.color = "#212529";
+
+        onlyPopular = false;
+    } else {
+        containerOnlyPopular.classList.add("active");
+        containerOnlyPopular.style.color = "#fcd93a";
+
+        onlyPopular = true;
+    }
+
+    OnResearch();
 }

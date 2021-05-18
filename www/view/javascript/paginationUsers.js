@@ -3,6 +3,7 @@
 let currentPage;
 let itemsPerPage;
 let numberPage;
+let filterPseudo;
 
 // ---- CALL FUNC ----
 
@@ -13,6 +14,7 @@ $("document").ready(OnStart());
 async function OnStart() {
     currentPage = 1;
     itemsPerPage = 6;
+    filterPseudo = "ASC";
     numberPage = await GetNumberPage();
 
     SetPage(1);
@@ -44,6 +46,7 @@ async function GetUsersFiltered() {
             filter: filter,
             from: from,
             offset: offset,
+            filterPseudo: filterPseudo,
         },
         success: function (result) {
             if (result == "") result = "There are no users that match your specifications.";
@@ -65,8 +68,6 @@ async function GetNumberPage() {
         success: function (result) {
             let count = JSON.parse(result)[0]["count"];
             numberPage = Math.ceil(parseInt(count) / itemsPerPage);
-            console.log(count);
-            console.log(parseInt(count) / itemsPerPage);
         },
     });
 
@@ -193,4 +194,20 @@ function SetStateDisabled(button, state) {
 
 function SetTextButton(button, text) {
     button.firstChild.innerHTML = text;
+}
+
+function SetFilterPseudo() {
+    let containerOnlyPopular = document.getElementById("arrowFilterPseudo");
+
+    if (containerOnlyPopular.classList.contains("bi-arrow-down")) {
+        containerOnlyPopular.classList.replace("bi-arrow-down", "bi-arrow-up");
+
+        filterPseudo = "DESC";
+    } else {
+        containerOnlyPopular.classList.replace("bi-arrow-up", "bi-arrow-down");
+
+        filterPseudo = "ASC";
+    }
+
+    OnResearch();
 }
