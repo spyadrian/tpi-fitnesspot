@@ -92,8 +92,8 @@ foreach ($someSpots as $s) : ?>
 
             <!-- Heart -->
             <div class="d-flex justify-content-center align-items-center w-15" style="color: #ff5454 !important;">
-                <p class="mb-0 text-center" style="font-size: 1.8rem;"><?= $s['numberLike'] ?></p>
-                <i class="bi bi-heart-fill ms-2" style="font-size: 2rem;"></i>
+                <p class="mb-0 text-center" style="font-size: 1.4rem;"><?= $s['numberLike'] ?></p>
+                <i class="bi bi-heart-fill ms-2" style="font-size: 1.4rem;"></i>
             </div>
 
         </div>

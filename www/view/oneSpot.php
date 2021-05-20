@@ -16,12 +16,10 @@ require_once './session.php';
 
 $actionAllowed = true;
 $adminActionAllowed = false;
-if (!isset($_SESSION['userId'])) {
-    $actionAllowed = false;
+if (!isset($_SESSION['userId'])) $actionAllowed = false;
 
-    if (isset($_SESSION['userPermission']) && $_SESSION['userPermission'] > 2)
-        $adminActionAllowed = true;
-}
+if (isset($_SESSION['userPermission']) && $_SESSION['userPermission'] >= 2)
+    $adminActionAllowed = true;
 
 
 // ---- SUBMIT ----
@@ -77,7 +75,9 @@ if (isset($error)) {
                 </div>
 
                 <div class="d-flex justify-content-end align-items-center">
-                    <a href="../controller/valideSpot.php?idSpot=<?= $mySpot['idSpot'] ?>" type="button" class="btn btn-primary me-3 h-100">Valide</a>
+                    <?php if ($mySpot['validate'] == '0') : ?>
+                        <a href="../controller/valideSpot.php?idSpot=<?= $mySpot['idSpot'] ?>" type="button" class="btn btn-primary me-3 h-100">Valide</a>
+                    <?php endif; ?>
                     <a href="../controller/deleteSpot.php?idSpot=<?= $mySpot['idSpot'] ?>" type="button" class="btn btn-danger h-100">Delete</a>
                 </div>
 
