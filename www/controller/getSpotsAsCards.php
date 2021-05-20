@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   getSpotsAsCards.php
+ * Description  :   A controller who control the data that will arrive from the table spots as cards.
+ */
+
 require_once "../model/Spot.php";
 require_once "../model/Media.php";
 

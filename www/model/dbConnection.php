@@ -1,12 +1,9 @@
 <?php
-
 /*
  * Name : 		    DBConnection
  * Description :    This classe allow to create a static connection to the DB,
  *                  based on the config/dbConfig.php. 
  */
-
-// ini_set('display_errors', 1);
 
 
 // ---- CONST VAR ----

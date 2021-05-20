@@ -1,3 +1,10 @@
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   mapAddSpot.js
+ * Description  :   It's where all the functioning of the map from the form addSpot work.
+ */
+
 mapboxgl.accessToken = MAPBOX_ACCESSTOKEN;
 
 // ----  FILEDS  ----

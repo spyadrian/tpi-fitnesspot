@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   updateUser.php
+ * Description  :   A controller who control the data who will update an user.
+ */
+
 require_once "../model/User.php";
 
 

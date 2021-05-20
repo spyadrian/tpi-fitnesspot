@@ -1,7 +1,17 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   like.php
+ * Description  :   It's where the classe Like stand.
+ */
+
 require_once 'dbConnection.php';
 
+/**
+ * A class that manages all calls sent to the table Like.
+ */
 class Like
 {
     // ---- FIELDS ----

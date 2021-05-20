@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   getSpotsFiltered.php
+ * Description  :   A controller who control the data that will arrive from the table spots.
+ */
+
 require_once "../model/Spot.php";
 require_once "../model/Media.php";
 

@@ -1,7 +1,17 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   comment.php
+ * Description  :   It's where the classe Comment stand.
+ */
+
 require_once "dbConnection.php";
 
+/**
+ * A class that manages all calls sent to the table Comment.
+ */
 class Comment
 {
     // ---- FIELDS ----

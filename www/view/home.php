@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   home.php
+ * Description  :   It's the view who show the home of the site web, it show some popular spots.
+ */
+
 require_once './navBar.php';
 require_once '../controller/getSpotsAsCards.php';
 require_once './session.php';

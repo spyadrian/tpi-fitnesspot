@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   getOneSpot.php
+ * Description  :   A controller who control the amout of information we will et of the spot.
+ */
+
 require_once "../model/Spot.php";
 require_once "../model/Media.php";
 require_once "../model/Like.php";

@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   signIn.php
+ * Description  :   A controller who control the connexion of an user.
+ */
+
 require_once '../view/session.php';
 require_once "../model/User.php";
 

@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   oneSpot.php
+ * Description  :   It's the view who show the information of one particular spot.
+ */
+
+
 require_once './navBar.php';
 require_once './session.php';
 

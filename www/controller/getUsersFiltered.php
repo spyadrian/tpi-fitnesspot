@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   getUsersFiltered.php
+ * Description  :   A controller who control the data that will arrive from the table user.
+ */
+
 require_once "../model/User.php";
 
 

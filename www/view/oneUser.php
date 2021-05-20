@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   oneUser.php
+ * Description  :   It's the view who show the information of one specifique user.
+ */
+
 require_once './navBar.php';
 require_once './session.php';
 

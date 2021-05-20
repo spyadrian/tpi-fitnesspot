@@ -1,6 +1,19 @@
 <?php
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   navBar.php
+ * Description  :   It's the module where we can call the navBar in a dynamic way.
+ */
+
 require_once './session.php';
 
+/**
+ * Get the right navBar according to the permission and the page we want to be active. 
+ * @param   activePage  the page we want to be active, (home, allSpots, map)
+ * @return  html        Return the apropriate navBar
+ */
 function GetNavBar($activePage)
 {
     $html = '

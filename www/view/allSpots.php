@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   allSpots.php
+ * Description  :   It's the view who show all the spots.
+ */
+
+
 require_once './navBar.php';
 ?>
 

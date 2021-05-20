@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   getSpotsAsMarkers.php
+ * Description  :   A controller who control the data that will arrive from the table spots as marker.
+ */
+
 require_once "../model/Spot.php";
 
 

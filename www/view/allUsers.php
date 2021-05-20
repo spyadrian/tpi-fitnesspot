@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   allUsers.php
+ * Description  :   It's the view who show all the users.
+ */
+
 require_once './navBar.php';
 require_once './session.php';
 

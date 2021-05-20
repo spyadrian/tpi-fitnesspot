@@ -1,3 +1,10 @@
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   mapOneSpot.js
+ * Description  :   It's where all the functioning of the implement of the map of oneSpot are.
+ */
+
 mapboxgl.accessToken = MAPBOX_ACCESSTOKEN;
 
 // ---  FILEDS  ---

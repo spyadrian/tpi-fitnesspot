@@ -1,7 +1,17 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   user.php
+ * Description  :   It's where the classe User stand.
+ */
+
 require_once "dbConnection.php";
 
+/**
+ * A class that manages all calls sent to the table User.
+ */
 class User
 {
     // ---- CONST ----

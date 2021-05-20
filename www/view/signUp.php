@@ -1,10 +1,25 @@
 <?php
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   signUp.php
+ * Description  :   It's the view of the part that allow the user to creat an account. 
+ */
+
+
 require_once './navBar.php';
+
+
+// ---- SUBMIT ----
 
 $submit = filter_input(INPUT_POST, 'signUp_Submit', FILTER_DEFAULT);
 if (isset($submit)) {
     require '../controller/signUp.php';
 }
+
+
+// ---- ERROR ----
 
 $errorAlert;
 

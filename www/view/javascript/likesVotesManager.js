@@ -1,6 +1,17 @@
-// Vote
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   likesVotesManager.js
+ * Description  :   It's where all the functioning of the likes and the votes are.
+ */
 
+// ---- Vote ----
+
+/**
+ * @summary     Send a rate to the database, acording to the actual data.
+ */
 function SendRate() {
+    // geting the data
     let rate = 0;
     let ratingStars = document.getElementsByName("rating");
     let idSpot = document.getElementById("mySpotId");
@@ -13,6 +24,7 @@ function SendRate() {
         }
     }
 
+    // call ajax to set the rate in the database
     $.ajax({
         url: "../controller/sendRate.php",
         type: "POST",
@@ -22,17 +34,23 @@ function SendRate() {
             idUser: idUser.value,
         },
         success: function (result) {
+            // refresh view
             document.getElementById("containerStar").innerHTML = result;
         },
     });
 }
 
-// Like
+// ---- Like ----
 
+/**
+ * @summary     Add a like to the database, acording to the actual data.
+ */
 function AddLike() {
+    // getting data
     let liked = document.getElementById("myUserLiked");
     let idSpot = document.getElementById("mySpotId");
 
+    // call ajax to add a like to the database
     $.ajax({
         url: "../controller/addLike.php",
         type: "POST",
@@ -41,6 +59,7 @@ function AddLike() {
             idSpot: idSpot.value,
         },
         success: function (result) {
+            // refresh view
             let containerLike = document.getElementById("containerLike");
             let valueLike = parseInt(containerLike.innerText);
             let heartIcon = ' <i class="bi bi-heart-fill" style="font-size: 0.9rem;"></i>';

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   getCountSpots.php
+ * Description  :   A controller who control the count of all the spots.
+ */
+
 require_once "../model/Spot.php";
 
 

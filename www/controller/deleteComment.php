@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   deleteComment.php
+ * Description  :   A controller who control the removal of a comment.
+ */
+
 require_once "../model/Comment.php";
 require_once "../view/session.php";
 

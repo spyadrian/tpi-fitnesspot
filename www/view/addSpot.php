@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   addSpot.php
+ * Description  :   It's the view of the part that allow the user to add an Spot to the site.  
+ */
+
+
 require_once './navBar.php';
 require_once './session.php';
 

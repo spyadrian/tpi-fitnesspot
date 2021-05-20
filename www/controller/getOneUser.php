@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   getOneUser.php
+ * Description  :   A controller who control the amout of information we will et of the user.
+ */
+
 require_once "../model/User.php";
 
 

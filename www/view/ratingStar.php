@@ -1,7 +1,10 @@
 <!-- 
-    CREDIT TO : Mert Cukuren 
-    FROM : https://codepen.io/knyttneve/pen/EBNqPN  
--->
+    Author       :   Mert Cukuren
+    Project      :   Rating star system 
+    Filename     :   ratingStar.php
+    Description  :   This is the module used for the user to enter his vote.
+    From         :   https://codepen.io/knyttneve/pen/EBNqPN  
+ -->
 <div class="container">
     <div class="feedback">
         <div class="rating">

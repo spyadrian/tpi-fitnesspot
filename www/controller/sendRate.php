@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   sendRate.php
+ * Description  :   A controller who control that the rate is well sent.
+ */
+
 require_once "../model/Vote.php";
 require_once "../model/Spot.php";
 require_once "../view/session.php";

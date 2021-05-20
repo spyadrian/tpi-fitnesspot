@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   deleteUser.php
+ * Description  :   A controller who control the removal of a user.
+ */
+
 require_once "../model/User.php";
 require_once "../view/session.php";
 

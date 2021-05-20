@@ -1,7 +1,17 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   spot.php
+ * Description  :   It's where the classe Spot stand.
+ */
+
 require_once 'dbConnection.php';
 
+/**
+ * A class that manages all calls sent to the table Spot.
+ */
 class Spot
 {
     // ---- FIELDS ----

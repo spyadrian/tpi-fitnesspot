@@ -1,10 +1,24 @@
 <?php
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   signIn.php
+ * Description  :   It's the view of the part that allow the user to connect to his account. 
+ */
+
 require_once './navBar.php';
+
+
+// ---- SUBMIT ----
 
 $submit = filter_input(INPUT_POST, 'signIn_Submit', FILTER_DEFAULT);
 if (isset($submit)) {
     require '../controller/signIn.php';
 }
+
+
+// ---- ERROR ----
 
 $errorAlert;
 

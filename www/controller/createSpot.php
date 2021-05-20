@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   createSpot.php
+ * Description  :   A controller who control the creation of a spot.
+ */
+
 require_once "../model/Spot.php";
 require_once "../model/Media.php";
 require_once "../model/User.php";

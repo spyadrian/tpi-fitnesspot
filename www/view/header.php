@@ -1,5 +1,8 @@
 <!-- 
-    HEADER
+    Author       :   Adrian Spycher
+    Project      :   FitnesSpot
+    Filename     :   header.php
+    Description  :   It's the header of all the view of the projet. This file is include in all the view.
  -->
 
 <meta charset="UTF-8">

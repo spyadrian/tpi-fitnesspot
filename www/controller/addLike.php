@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   addLike.php
+ * Description  :   A controller who control the addition of a like.
+ */
+
 require_once "../model/Like.php";
 require_once '../view/session.php';
 

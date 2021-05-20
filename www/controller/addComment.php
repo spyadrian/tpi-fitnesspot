@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   addComment.php
+ * Description  :   A controller who control the addition of a comment.
+ */
+
 require_once "../model/Comment.php";
 
 

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   getCountUsers.php
+ * Description  :   A controller who control the count of all the users.
+ */
+
 require_once "../model/User.php";
 
 

@@ -1,5 +1,16 @@
 <?php
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   map.php
+ * Description  :   It's the view where a map is implement and show spots as marker.
+ */
+
 require_once './navBar.php';
+
+
+// ---- ERROR ----
 
 $error = filter_input(INPUT_GET, "error", FILTER_DEFAULT, FILTER_SANITIZE_STRING);
 $errorAlert;

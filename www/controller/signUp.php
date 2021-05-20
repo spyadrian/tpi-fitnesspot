@@ -1,5 +1,13 @@
 <?php
 
+
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   signUp.php
+ * Description  :   A controller who control the creation of an account.
+ */
+
 require_once "../model/User.php";
 
 

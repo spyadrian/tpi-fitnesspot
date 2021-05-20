@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   valideSpot.php
+ * Description  :   A controller who control the validation of a spot.
+ */
+
 require_once "../model/Spot.php";
 require_once "../view/session.php";
 

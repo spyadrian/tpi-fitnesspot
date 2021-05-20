@@ -1,7 +1,17 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   vote.php
+ * Description  :   It's where the classe Vote stand.
+ */
+
 require_once 'dbConnection.php';
 
+/**
+ * A class that manages all calls sent to the table Vote.
+ */
 class Vote
 {
     // ---- FIELDS ----

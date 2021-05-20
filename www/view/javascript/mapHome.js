@@ -1,3 +1,10 @@
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   mapHome.js
+ * Description  :   It's where all the functioning of the implement of the map of home are.
+ */
+
 mapboxgl.accessToken = MAPBOX_ACCESSTOKEN;
 
 // ---  FILEDS  ---
@@ -72,7 +79,6 @@ function GetSpots() {
         },
         success: function (result) {
             let spots = JSON.parse(result);
-            console.log(spots);
             ShowSpots(spots);
         },
     });

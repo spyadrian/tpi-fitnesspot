@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Author       :   Adrian Spycher
+ * Project      :   FitnesSpot
+ * Filename     :   deleteSpot.php
+ * Description  :   A controller who control the removal of a spot.
+ */
+
 require_once "../model/Spot.php";
 require_once "../view/session.php";
 
