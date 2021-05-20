@@ -39,7 +39,7 @@ if (isset($error)) {
     <title>FitnesSpot ─ Sign Up</title>
 </head>
 
-<body class="h-100">
+<body class="h-100 bg-main">
 
     <!-- NAV -->
     <?= GetNavBar('') ?>

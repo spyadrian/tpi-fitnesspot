@@ -20,13 +20,13 @@ require_once './navBar.php';
     <title>FitnesSpot ─ All Spots</title>
 </head>
 
-<body class="h-100">
+<body class="h-100 bg-main">
 
     <!-- NAV -->
     <?= GetNavBar('allSpots') ?>
 
     <!-- MAIN -->
-    <div class="d-flex h-90 w-100 flex-column px-6 bg-main">
+    <div class="d-flex h-90 w-100 flex-column px-6">
 
         <!-- HEADER -->
         <div class="d-flex justify-content-between mt-5 mb-5">
@@ -53,7 +53,6 @@ require_once './navBar.php';
 
             </div>
 
-            <!-- ? Width a bit bigger -->
             <hr class="mt-2">
         </div>
 

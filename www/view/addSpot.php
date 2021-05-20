@@ -38,13 +38,13 @@ if (isset($error)) {
     <title>FitnesSpot ─ Add Spot</title>
 </head>
 
-<body class="h-100">
+<body class="h-100 bg-main">
 
     <!-- NAV -->
     <?= GetNavBar('allSpots') ?>
 
     <!-- MAIN -->
-    <div class="d-flex flex-column h-90 w-100 px-6 bg-main">
+    <div class="d-flex flex-column h-90 w-100 px-6">
 
         <!-- HEADER -->
         <div class="d-flex justify-content-start mt-5 mb-5">

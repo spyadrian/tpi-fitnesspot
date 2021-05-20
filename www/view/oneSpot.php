@@ -57,13 +57,13 @@ if (isset($error)) {
     <title>FitnesSpot ─ One Spot</title>
 </head>
 
-<body>
+<body class="bg-main">
 
     <!-- NAV -->
     <?= GetNavBar('allSpots') ?>
 
     <!-- MAIN -->
-    <div class="d-flex flex-column h-90 w-100 px-6 bg-main">
+    <div class="d-flex flex-column h-90 w-100 px-6">
 
         <!-- HEADER -->
 

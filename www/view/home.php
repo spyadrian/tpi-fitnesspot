@@ -22,13 +22,13 @@ require_once './session.php';
     <title>FitnesSpot ─ Home</title>
 </head>
 
-<body class="h-100">
+<body class="h-100 bg-main">
 
     <!-- NAV -->
     <?= GetNavBar('home'); ?>
 
     <!-- MAIN -->
-    <div class="d-flex h-90 w-100 flex-column bg-main">
+    <div class="d-flex h-90 w-100 flex-column">
 
         <!-- BANNER -->
         <div class="d-flex justify-content-center align-items-center w-100 banner-bg mb-3" style="min-height: 400px;">

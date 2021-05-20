@@ -26,13 +26,13 @@ SetSessionLevel(2);
     <title>FitnesSpot ─ All Users</title>
 </head>
 
-<body class="h-100">
+<body class="h-100 bg-main">
 
     <!-- NAV -->
     <?= GetNavBar('') ?>
 
     <!-- MAIN -->
-    <div class="d-flex h-90 w-100 flex-column px-6 bg-main">
+    <div class="d-flex h-90 w-100 flex-column px-6">
 
         <!-- HEADER -->
         <div class="d-flex justify-content-start mt-5 mb-5">

@@ -66,13 +66,13 @@ if (isset($error)) {
     <title>FitnesSpot ─ One User</title>
 </head>
 
-<body>
+<body class="h-100 bg-main">
 
     <!-- NAV -->
     <?= GetNavBar('') ?>
 
     <!-- MAIN -->
-    <div class="d-flex flex-column h-90 w-100 px-6 bg-main">
+    <div class="d-flex flex-column h-90 w-100 px-6">
 
         <!-- HEADER -->
         <div class="d-flex justify-content-start align-items-end mt-5 mb-5">
@@ -84,10 +84,7 @@ if (isset($error)) {
         <?= (isset($errorAlert)) ? $errorAlert : null; ?>
 
         <!-- BODY  -->
-        <div class=" d-flex justify-content-center align-items-start flex-wrap h-100 w-100 mb-5">
-
-            <!-- AVATAR USER -->
-
+        <div class="d-flex justify-content-center align-items-center flex-wrap h-100 w-100 mb-5">
 
             <!-- INFO USER -->
             <div class="card rounded-10 shadow w-60">

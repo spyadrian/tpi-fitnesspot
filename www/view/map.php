@@ -31,13 +31,13 @@ if (isset($error)) {
     <title>FitnesSpot ─ Map</title>
 </head>
 
-<body class="h-100">
+<body class="h-100 bg-main">
 
     <!-- NAV -->
     <?= GetNavBar('map') ?>
 
     <!-- MAIN -->
-    <div class="h-90 w-100 bg-main">
+    <div class="h-90 w-100">
 
         <!-- MAP -->
         <div id='map' class="p-2 w-100 h-100"></div>
