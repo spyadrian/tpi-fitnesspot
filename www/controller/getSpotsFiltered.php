@@ -58,6 +58,8 @@ for ($i = 0; $i < count($someSpots, COUNT_NORMAL); $i++) {
 }
 
 
+
+
 // ---- CREATE HTML ---- 
 
 foreach ($someSpots as $s) : ?>
@@ -89,8 +91,9 @@ foreach ($someSpots as $s) : ?>
             </div>
 
             <!-- Heart -->
-            <div class="d-flex justify-content-center align-items-center w-15">
-                <i class="bi bi-heart-fill" style="font-size: 2rem;"></i>
+            <div class="d-flex justify-content-center align-items-center w-15" style="color: #ff5454 !important;">
+                <p class="mb-0 text-center" style="font-size: 1.8rem;"><?= $s['numberLike'] ?></p>
+                <i class="bi bi-heart-fill ms-2" style="font-size: 2rem;"></i>
             </div>
 
         </div>
