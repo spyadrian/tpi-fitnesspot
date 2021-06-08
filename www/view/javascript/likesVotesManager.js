@@ -15,7 +15,6 @@ function SendRate() {
     let rate = 0;
     let ratingStars = document.getElementsByName("rating");
     let idSpot = document.getElementById("mySpotId");
-    let idUser = document.getElementById("myUserId");
 
     for (const star of ratingStars) {
         if (star.checked) {
@@ -31,7 +30,6 @@ function SendRate() {
         data: {
             rate: rate,
             idSpot: idSpot.value,
-            idUser: idUser.value,
         },
         success: function (result) {
             // refresh view

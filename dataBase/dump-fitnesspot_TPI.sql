@@ -43,7 +43,7 @@ CREATE TABLE `comments` (
   KEY `comments_on_users_FK` (`idUser`),
   CONSTRAINT `comments_on_spots_FK` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comments_on_users_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +81,7 @@ CREATE TABLE `medias` (
   PRIMARY KEY (`idMedia`),
   KEY `medias_on_spots_FK` (`idSpot`),
   CONSTRAINT `medias_on_spots_FK` FOREIGN KEY (`idSpot`) REFERENCES `spots` (`idSpot`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,7 +108,7 @@ CREATE TABLE `spots` (
   KEY `spots_on_users_FK` (`idUser`),
   FULLTEXT KEY `spots_name-address-detail_IDX` (`name`,`address`,`detail`),
   CONSTRAINT `spots_on_users_FK` FOREIGN KEY (`idUser`) REFERENCES `users` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1799 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,7 +127,7 @@ CREATE TABLE `users` (
   `createdAt` datetime NOT NULL,
   PRIMARY KEY (`idUser`),
   FULLTEXT KEY `users_pseudo-email_IDX` (`pseudo`,`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
