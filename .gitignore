@@ -1,0 +1,9 @@
+# Local configuration (copy from *.example.* and fill in your values)
+www/config/config.inc.php
+www/config/config.inc.js
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
