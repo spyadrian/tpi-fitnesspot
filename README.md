@@ -2,7 +2,7 @@
 
 A community web platform to find and share **outdoor fitness spots** (street workout parks, fitness trails) on an interactive map – built in PHP / MySQL with Mapbox.
 
-<p align="center"><img src="docs/add-spot.png" width="720" alt="Add a spot: form and map to pick its location"></p>
+<p align="center"><img src="docs/home.jpg" width="760" alt="FitnesSpot home page: search bar and the most popular spots"></p>
 
 > **CFPT Geneva · Swiss Federal VET Diploma (CFC) in IT – final individual practical exam (*TPI*) · May 2021**
 > Solo project from an imposed specification, in 11 days / 88 hours: analysis, implementation, tests and documentation.
@@ -17,6 +17,10 @@ A community web platform to find and share **outdoor fitness spots** (street wor
 | **Administrator** | is notified by e-mail of new spots and validates them, manages users (search, sort, edit, delete), deletes spots and comments |
 
 The database ships with **~1,800 fitness stations in Switzerland**, imported from OpenStreetMap with an Overpass query.
+
+| Map of the spots | A spot | Adding a spot |
+|---|---|---|
+| <img src="docs/map.jpg" alt="Map of the spots around Geneva"> | <img src="docs/spot.jpg" alt="Spot page with photo, rating and map"> | <img src="docs/add-spot.jpg" alt="Form to add a spot and pick its position on the map"> |
 
 ## Technical highlights
 
@@ -43,7 +47,7 @@ www/
 ├── config/       configuration examples (database, Mapbox token)
 └── asset/        CSS and images
 database/         schema + application user, and default data
-docs/             report (French), screenshot, database schema
+docs/             report (French), screenshots, database schema
 ```
 
 ## Getting started
